@@ -149,8 +149,8 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>###写在前面的话<br>     进入前端开发2年，一直不知道怎么搭建前端项目，一直都是公司前端负责人开好项目，然后往里面填东西，想着自己捣弄点东西，却无从下手，所以奋发图强一下，下定决心要自己构建一个项目。</p>
-<p>###从目录开始搞清楚<br>  对于这个目录，基本处于懵逼状态，只知道其中几个目录和文件的作用，其他都不是清楚，唯有一个个地进击</p>
+        <h3 id="u5199_u5728_u524D_u9762_u7684_u8BDD"><a href="#u5199_u5728_u524D_u9762_u7684_u8BDD" class="headerlink" title="写在前面的话"></a>写在前面的话</h3><pre><code>进入前端开发2年，一直不知道怎么搭建前端项目，一直都是公司前端负责人开好项目，然后往里面填东西，想着自己捣弄点东西，却无从下手，所以奋发图强一下，下定决心要自己构建一个项目。
+</code></pre><h3 id="u4ECE_u76EE_u5F55_u5F00_u59CB_u641E_u6E05_u695A"><a href="#u4ECE_u76EE_u5F55_u5F00_u59CB_u641E_u6E05_u695A" class="headerlink" title="从目录开始搞清楚"></a>从目录开始搞清楚</h3><p>  对于这个目录，基本处于懵逼状态，只知道其中几个目录和文件的作用，其他都不是清楚，唯有一个个地进击</p>
 <p>-build // …</p>
 <p>-config  // src, server 共同使用的config</p>
 <p>-dist // 项目打包后存放的目录</p>
@@ -171,10 +171,7 @@
 <p>-package.json npm说明文件</p>
 <p>-wepack.config.js // webpack配置文件</p>
 <p>-yarn.lock // yarn的文件，执行yarn命令后自动生成</p>
-<p>###几个重要的工具</p>
-<p>#####代码检测与编码规范类</p>
-<p>######EditorConfig（<a href="http://editorconfig.org/）" target="_blank" rel="external">http://editorconfig.org/）</a></p>
-<p>EditorConfig是一套用于统一代码格式的解决方案，它可以帮助开发者在不同的编辑器和IDE之间定义和维护一致的代码风格。它需要一个配置文件配置相应的内容和一个编辑的插件共同配合使用。</p>
+<h3 id="u51E0_u4E2A_u91CD_u8981_u7684_u5DE5_u5177"><a href="#u51E0_u4E2A_u91CD_u8981_u7684_u5DE5_u5177" class="headerlink" title="几个重要的工具"></a>几个重要的工具</h3><h5 id="u4EE3_u7801_u68C0_u6D4B_u4E0E_u7F16_u7801_u89C4_u8303_u7C7B"><a href="#u4EE3_u7801_u68C0_u6D4B_u4E0E_u7F16_u7801_u89C4_u8303_u7C7B" class="headerlink" title="代码检测与编码规范类"></a>代码检测与编码规范类</h5><h6 id="EditorConfig_uFF08http_3A//editorconfig-org/_uFF09"><a href="#EditorConfig_uFF08http_3A//editorconfig-org/_uFF09" class="headerlink" title="EditorConfig（http://editorconfig.org/）"></a>EditorConfig（<a href="http://editorconfig.org/）" target="_blank" rel="external">http://editorconfig.org/）</a></h6><p>EditorConfig是一套用于统一代码格式的解决方案，它可以帮助开发者在不同的编辑器和IDE之间定义和维护一致的代码风格。它需要一个配置文件配置相应的内容和一个编辑的插件共同配合使用。</p>
 <ul>
 <li><p>配置文件的编写</p>
 <p>  项目根目录建立.editorconfig文件，一般JS项目的配置内容如下：</p>
@@ -185,7 +182,7 @@
 <p>  自己使用的IDE是否支持，是否需要另外安装插件可以到官网查看并下载相应的插件。如果是sublime，直接在Package Control里搜EditorConfig然后安装就可以。</p>
 </li>
 </ul>
-<p>######ESLint（<a href="http://eslint.org/）" target="_blank" rel="external">http://eslint.org/）</a><br>ESLint是一款代码检测工具，可以根据配置用来避免一些低级错误和统一代码风格。</p>
+<h6 id="ESLint_uFF08http_3A//eslint-org/_uFF09"><a href="#ESLint_uFF08http_3A//eslint-org/_uFF09" class="headerlink" title="ESLint（http://eslint.org/）"></a>ESLint（<a href="http://eslint.org/）" target="_blank" rel="external">http://eslint.org/）</a></h6><p>ESLint是一款代码检测工具，可以根据配置用来避免一些低级错误和统一代码风格。</p>
 <p>需要安装相应的库（ESLint），编辑器插件（sublime 的是 SublimtLinter-contrib-eslint）再配合配置文件或者代码注释使用，具体使用方式可参考<a href="http://www.tuicool.com/articles/7JZZJzn" target="_blank" rel="external">http://www.tuicool.com/articles/7JZZJzn</a> <a href="http://www.cnblogs.com/le0zh/p/5619350.html" target="_blank" rel="external">http://www.cnblogs.com/le0zh/p/5619350.html</a></p>
 <p>由于ESLint本身仅支持语法有限,如果还使用其他则还需要插件，常见ESLint插件有：</p>
 <ul>
@@ -196,28 +193,24 @@
 <li><p>eslint-plugin-react</p>
 </li>
 </ul>
-<p>######StyleLint（<a href="http://stylelint.io/）" target="_blank" rel="external">http://stylelint.io/）</a><br>StyleLint是对css,sass进行代码审查的工具。需要安装相应的库（stylelint），编辑器插件（sublime 的是 SublimtLinter-contrib-stylelint）再配合配置文件使用</p>
+<h6 id="StyleLint_uFF08http_3A//stylelint-io/_uFF09"><a href="#StyleLint_uFF08http_3A//stylelint-io/_uFF09" class="headerlink" title="StyleLint（http://stylelint.io/）"></a>StyleLint（<a href="http://stylelint.io/）" target="_blank" rel="external">http://stylelint.io/）</a></h6><p>StyleLint是对css,sass进行代码审查的工具。需要安装相应的库（stylelint），编辑器插件（sublime 的是 SublimtLinter-contrib-stylelint）再配合配置文件使用</p>
 <ul>
 <li><p>第三方依赖库安装工具</p>
 <p>  项目中使用的第三方库依赖情况可以通过package.json里面查看和配置。</p>
 <p>  安装工具使用npm，喜欢yarn的可以再安装一下yarn</p>
 </li>
 </ul>
-<p>#####代码编译及打包（重点）</p>
-<p>######Webpack<br>模块化管理和代码打包工具，另外配合webpack-dev-server可以构建本地服务器，达到热更新的效果，还能生成Source Maps方便调试。</p>
-<p>######Babel<br>代码编译工具，使用Babel可以使用新的JavaScript标准进行开发，还能使用基于JavaScript拓展的语言，例如JSX。</p>
-<p>###使用webpack + babel 构建项目</p>
-<p>#####构建项目准备</p>
-<ol>
+<h5 id="u4EE3_u7801_u7F16_u8BD1_u53CA_u6253_u5305_uFF08_u91CD_u70B9_uFF09"><a href="#u4EE3_u7801_u7F16_u8BD1_u53CA_u6253_u5305_uFF08_u91CD_u70B9_uFF09" class="headerlink" title="代码编译及打包（重点）"></a>代码编译及打包（重点）</h5><h6 id="Webpack"><a href="#Webpack" class="headerlink" title="Webpack"></a>Webpack</h6><p>模块化管理和代码打包工具，另外配合webpack-dev-server可以构建本地服务器，达到热更新的效果，还能生成Source Maps方便调试。</p>
+<h6 id="Babel"><a href="#Babel" class="headerlink" title="Babel"></a>Babel</h6><p>代码编译工具，使用Babel可以使用新的JavaScript标准进行开发，还能使用基于JavaScript拓展的语言，例如JSX。</p>
+<h3 id="u4F7F_u7528webpack_+_babel__u6784_u5EFA_u9879_u76EE"><a href="#u4F7F_u7528webpack_+_babel__u6784_u5EFA_u9879_u76EE" class="headerlink" title="使用webpack + babel 构建项目"></a>使用webpack + babel 构建项目</h3><h5 id="u6784_u5EFA_u9879_u76EE_u51C6_u5907"><a href="#u6784_u5EFA_u9879_u76EE_u51C6_u5907" class="headerlink" title="构建项目准备"></a>构建项目准备</h5><ol>
 <li><p>新建一个项目文件夹用于练习，此处命名为hello-project</p>
 </li>
 <li><p>执行<code>npm init</code> 自动创建package.json文件</p>
 </li>
 </ol>
-<p>####webpack</p>
-<p>######什么是webpack<br>Webpack 是当下最热门的前端资源模块化管理和打包工具。它可以将许多松散的模块按照依赖和规则打包成符合生产环境部署的前端资源。还可以将按需加载的模块进行代码分隔，等到实际需要的时候再异步加载。通过 loader 的转换，任何形式的资源都可以视作模块，比如 CommonJs 模块、 AMD 模块、 ES6 模块、CSS、图片、 JSON、Coffeescript、 LESS 等。 —webpack 中文指南</p>
-<p>######webpack的工作方式<br>webpack根据模块的依赖关系进行分析，然后根据用户的配置将这些模块按照指定规则生成对应的静态文件</p>
-<p>######如何使用webpack<br>1.安装webpack</p>
+<h4 id="webpack"><a href="#webpack" class="headerlink" title="webpack"></a>webpack</h4><h6 id="u4EC0_u4E48_u662Fwebpack"><a href="#u4EC0_u4E48_u662Fwebpack" class="headerlink" title="什么是webpack"></a>什么是webpack</h6><p>Webpack 是当下最热门的前端资源模块化管理和打包工具。它可以将许多松散的模块按照依赖和规则打包成符合生产环境部署的前端资源。还可以将按需加载的模块进行代码分隔，等到实际需要的时候再异步加载。通过 loader 的转换，任何形式的资源都可以视作模块，比如 CommonJs 模块、 AMD 模块、 ES6 模块、CSS、图片、 JSON、Coffeescript、 LESS 等。 —webpack 中文指南</p>
+<h6 id="webpack_u7684_u5DE5_u4F5C_u65B9_u5F0F"><a href="#webpack_u7684_u5DE5_u4F5C_u65B9_u5F0F" class="headerlink" title="webpack的工作方式"></a>webpack的工作方式</h6><p>webpack根据模块的依赖关系进行分析，然后根据用户的配置将这些模块按照指定规则生成对应的静态文件</p>
+<h6 id="u5982_u4F55_u4F7F_u7528webpack"><a href="#u5982_u4F55_u4F7F_u7528webpack" class="headerlink" title="如何使用webpack"></a>如何使用webpack</h6><p>1.安装webpack</p>
 <p><code>npm -s webpack</code></p>
 <p><code>yarn add —dev webpack</code></p>
 <p>2.构建目录</p>
@@ -241,16 +234,15 @@
 <p>  执行类似于node_modules/.bin/webpack这样的命令其实是比较烦人且容易出错的，不过值得庆幸的是npm可以引导任务执行，对其进行配置后可以使用<br>  简单的npm start命令来代替这些繁琐的命令。在package.json中对npm的脚本部分进行相关设置即可，设置方法如下。</p>
 </li>
 </ul>
-<p>###强大的Loader<br>Loader是webpack里面最重要的工具，通过使用不同的Loader，可以对不同格式的文件进行相应的处理，例如将React的JSX文件转换成JS文件，将SCSS文件转换成CSS文件，还能进行转码，将下一代标准的JS代码转换成现代浏览器通用的JS代码，十分强大。</p>
-<p>#####使用方法<br>Loaders需要单独安装并且需要在webpack.config.js下的modules关键字下进行配置，Loaders的配置选项包括以下几方面：<br>test：一个匹配loaders所处理的文件的拓展名的正则表达式（必须）<br>loader：loader的名称（必须）<br>include/exclude:手动添加必须处理的文件（文件夹）或屏蔽不需要处理的文件（文件夹）（可选）；<br>query：为loaders提供额外的设置选项（可选）</p>
-<p>#####示例（json-loader）<br>说明：使用json-loader处理json文件，继续之前的例子，把Greeter.js里的问候信息放在一个单独的JSON文件里，并通过相应的的webpack配置使Greeter.js可以读取JSON文件的值<br>安装</p>
-<p><code>npm install --save-dev json-loader</code></p>
-<p>######webpack配置</p>
-<p>创建JSON文件 app/config.json</p>
+<h3 id="u5F3A_u5927_u7684Loader"><a href="#u5F3A_u5927_u7684Loader" class="headerlink" title="强大的Loader"></a>强大的Loader</h3><p>Loader是webpack里面最重要的工具，通过使用不同的Loader，可以对不同格式的文件进行相应的处理，例如将React的JSX文件转换成JS文件，将SCSS文件转换成CSS文件，还能进行转码，将下一代标准的JS代码转换成现代浏览器通用的JS代码，十分强大。</p>
+<h5 id="u4F7F_u7528_u65B9_u6CD5"><a href="#u4F7F_u7528_u65B9_u6CD5" class="headerlink" title="使用方法"></a>使用方法</h5><p>Loaders需要单独安装并且需要在webpack.config.js下的modules关键字下进行配置，Loaders的配置选项包括以下几方面：<br>test：一个匹配loaders所处理的文件的拓展名的正则表达式（必须）<br>loader：loader的名称（必须）<br>include/exclude:手动添加必须处理的文件（文件夹）或屏蔽不需要处理的文件（文件夹）（可选）；<br>query：为loaders提供额外的设置选项（可选）</p>
+<h5 id="u793A_u4F8B_uFF08json-loader_uFF09"><a href="#u793A_u4F8B_uFF08json-loader_uFF09" class="headerlink" title="示例（json-loader）"></a>示例（json-loader）</h5><p>说明：使用json-loader处理json文件，继续之前的例子，把Greeter.js里的问候信息放在一个单独的JSON文件里，并通过相应的的webpack配置使Greeter.js可以读取JSON文件的值<br>安装</p>
+<p><code>bash
+    npm install --save-dev json-loader</code></p>
+<h6 id="webpack_u914D_u7F6E"><a href="#webpack_u914D_u7F6E" class="headerlink" title="webpack配置"></a>webpack配置</h6><p>创建JSON文件 app/config.json</p>
 <p>更新Greeter.js</p>
 <p>运行后打开public/index.html的结果：</p>
-<p>#####常用的Loader</p>
-<ul>
+<h5 id="u5E38_u7528_u7684Loader"><a href="#u5E38_u7528_u7684Loader" class="headerlink" title="常用的Loader"></a>常用的Loader</h5><ul>
 <li>babel(十分重要强大)</li>
 </ul>
 <p>样式类：</p>
@@ -264,19 +256,19 @@
 <li><p>style-loader</p>
 <p>  通过插入<style>标签把CSS引入到DOM，github地址：<a href="https://github.com/webpack/style-loader">https://github.com/webpack/style-loader</a></p>
 </li>
+<li><p>autoprefixer-loader</p>
+<p>  为css代码自动添加适应不同浏览器的css前缀，github地址：<a href="https://github.com/passy/autoprefixer-loader">https://github.com/passy/autoprefixer-loader</a></p>
+</li>
 </ul>
-<p>+autoprefixer-loader</p>
-<pre><code>为css代码自动添加适应不同浏览器的css前缀，github地址：https://github.com/passy/autoprefixer-loader
-</code></pre><p>css预处理相关loader:</p>
+<p>css预处理相关loader:</p>
 <ul>
 <li>less-loader github地址：<a href="https://github.com/webpack/less-loader">https://github.com/webpack/less-loader</a></li>
 <li>sass-loader   github地址：<a href="https://github.com/jtangelder/sass-loader">https://github.com/jtangelder/sass-loader</a></li>
 <li>stylus-loader github地址：<a href="https://github.com/shama/stylus-loader">https://github.com/shama/stylus-loader</a></li>
 </ul>
-<p>###Plugins插件<br>插件（Plugins）是用来拓展Webpack功能的，它们会在整个构建过程中生效，执行相关的任务。与Loader的不同，Pluigns是在整个项目构建的过程生效的，对整个构建过程起作用，而loaders是打包过程中对相应的文件逐个处理。</p>
+<h3 id="Plugins_u63D2_u4EF6"><a href="#Plugins_u63D2_u4EF6" class="headerlink" title="Plugins插件"></a>Plugins插件</h3><p>插件（Plugins）是用来拓展Webpack功能的，它们会在整个构建过程中生效，执行相关的任务。与Loader的不同，Pluigns是在整个项目构建的过程生效的，对整个构建过程起作用，而loaders是打包过程中对相应的文件逐个处理。</p>
 <p>######使用方法：<br>插件的使用一般是在 webpack 的配置信息 plugins 选项中指定。Webpack 本身内置了一些常用的插件，还可以通过 npm 安装第三方插件。</p>
-<p>######示例(BannerPlugin)</p>
-<ul>
+<h6 id="u793A_u4F8B_28BannerPlugin_29"><a href="#u793A_u4F8B_28BannerPlugin_29" class="headerlink" title="示例(BannerPlugin)"></a>示例(BannerPlugin)</h6><ul>
 <li><p>安装：</p>
 <p>  BannerPlugin是用于版权声明的插件，因为是webpack内置的插件，所以无需安装，如果需要安装的话就执行：<br>  <code>npm install --save-dev &lt;插件名&gt;</code></p>
 </li>
@@ -286,8 +278,7 @@
 
 
 使用这个插件，打包后的JS文件会显示如下：
-</code></pre><p>######常用的Plugins</p>
-<ul>
+</code></pre><h6 id="u5E38_u7528_u7684Plugins"><a href="#u5E38_u7528_u7684Plugins" class="headerlink" title="常用的Plugins"></a>常用的Plugins</h6><ul>
 <li><p>HtmlWebpackPlugin  生成html模板的插件</p>
 </li>
 <li><p>Hot Module Replacement 模块化下当组件代码更新后，自动刷新试试预览修改后的效果，配合Webpack Dev Server使用</p>
@@ -301,7 +292,7 @@
 <li>UglifyJsPlugin 压缩JS代码</li>
 <li>ExtractTextPlugin：分离CSS和JS文件</li>
 </ul>
-<p>###缓存<br>缓存无处不在，使用缓存的最好方法是保证你的文件名和文件内容是匹配的（内容改变，名称相应改变）</p>
+<h3 id="u7F13_u5B58"><a href="#u7F13_u5B58" class="headerlink" title="缓存"></a>缓存</h3><p>缓存无处不在，使用缓存的最好方法是保证你的文件名和文件内容是匹配的（内容改变，名称相应改变）</p>
 <p>webpack可以把一个哈希值添加到打包的文件名中，添加特殊的字符串混合体（[name], [id] and [hash]）到输出文件名前，，配合extract-text-webpack-plugin使用方法如下：</p>
 <ul>
 <li>安装extract-text-webpack-plugin</li>
@@ -310,10 +301,9 @@
 <ul>
 <li>引入extract-text-webpack-plugin到webpack.config，并在plugin配置</li>
 </ul>
-<p>###Webpack的扩展功能</p>
-<p>#######Source Mao<br>生成Source Map(方便调试)，配置十分简单，只需要在配置文件中配置一下devtool, 然后选择适合的选项</p>
+<h3 id="Webpack_u7684_u6269_u5C55_u529F_u80FD"><a href="#Webpack_u7684_u6269_u5C55_u529F_u80FD" class="headerlink" title="Webpack的扩展功能"></a>Webpack的扩展功能</h3><p>####### Source Mao<br>生成Source Map(方便调试)，配置十分简单，只需要在配置文件中配置一下devtool, 然后选择适合的选项</p>
 <p>增加devtool配置：</p>
-<p>#######webpack-dev-server<br>此功能可以实现热更新，一旦代码修改后，浏览器可以自动刷新显示最新的结果。</p>
+<p>####### webpack-dev-server<br>此功能可以实现热更新，一旦代码修改后，浏览器可以自动刷新显示最新的结果。</p>
 <ul>
 <li>安装</li>
 </ul>
@@ -332,37 +322,33 @@ package.json中npm start 的配置改成：
 
 
 浏览器输入本地服务器地址即可看到内容
-</code></pre><p>######产品阶段的构建<br>目前为止，我们已经使用webpack构建了一个完整的开发环境。但是在产品阶段，可能还需要对打包的文件进行额外的处理，比如说优化，压缩，缓存以及分离CSS和JS。</p>
+</code></pre><h6 id="u4EA7_u54C1_u9636_u6BB5_u7684_u6784_u5EFA"><a href="#u4EA7_u54C1_u9636_u6BB5_u7684_u6784_u5EFA" class="headerlink" title="产品阶段的构建"></a>产品阶段的构建</h6><p>目前为止，我们已经使用webpack构建了一个完整的开发环境。但是在产品阶段，可能还需要对打包的文件进行额外的处理，比如说优化，压缩，缓存以及分离CSS和JS。</p>
 <p>对于复杂的项目来说，需要复杂的配置，这时候分解配置文件为多个小的文件可以使得事情井井有条，为此可以创建一个webpack.production.config.js文件，里面的结构和内容基本和webpack.config相似，不过这里可以加入只在产品阶段使用的设置，例如plugins加入UglifyJsPlugin来压缩代码</p>
-<p>—————华丽的分割线—————</p>
-<p>现在已经能通过webpack构建一个普通的项目了，不过要构建一个React项目，想要用ES6,ES7或者使用React还需要一个很重要的东西—Babel</p>
-<p>###Babel</p>
-<p>#####什么是Babel<br>Babel是一个JavaScript编译器，可以将下一代JavaScript代码转换成现代浏览器能运行的代码，还支持语法扩展，能支持像React所用的JSX语法，同时还支持用于静态检查的流式语法。</p>
-<p>#####Babel的工作方式<br>Babel的一切都是插件，Babel本身被分解成几个核心的模块，用户根据项目需求使用。</p>
-<p>#####如何使用Babel<br>Babel的使用方法用很多种，可以独立使用，可以结合相关的工具使用，这里主要展示如何和webpack一起使用。</p>
-<p>######webpack和React项目中使用Babel的几个重要模块：</p>
-<ul>
+<pre><code>—————华丽的分割线—————
+</code></pre><p>现在已经能通过webpack构建一个普通的项目了，不过要构建一个React项目，想要用ES6,ES7或者使用React还需要一个很重要的东西—Babel</p>
+<h3 id="Babel-1"><a href="#Babel-1" class="headerlink" title="Babel"></a>Babel</h3><h5 id="u4EC0_u4E48_u662FBabel"><a href="#u4EC0_u4E48_u662FBabel" class="headerlink" title="什么是Babel"></a>什么是Babel</h5><p>Babel是一个JavaScript编译器，可以将下一代JavaScript代码转换成现代浏览器能运行的代码，还支持语法扩展，能支持像React所用的JSX语法，同时还支持用于静态检查的流式语法。</p>
+<h5 id="Babel_u7684_u5DE5_u4F5C_u65B9_u5F0F"><a href="#Babel_u7684_u5DE5_u4F5C_u65B9_u5F0F" class="headerlink" title="Babel的工作方式"></a>Babel的工作方式</h5><p>Babel的一切都是插件，Babel本身被分解成几个核心的模块，用户根据项目需求使用。</p>
+<h5 id="u5982_u4F55_u4F7F_u7528Babel"><a href="#u5982_u4F55_u4F7F_u7528Babel" class="headerlink" title="如何使用Babel"></a>如何使用Babel</h5><p>Babel的使用方法用很多种，可以独立使用，可以结合相关的工具使用，这里主要展示如何和webpack一起使用。</p>
+<h6 id="webpack_u548CReact_u9879_u76EE_u4E2D_u4F7F_u7528Babel_u7684_u51E0_u4E2A_u91CD_u8981_u6A21_u5757_uFF1A"><a href="#webpack_u548CReact_u9879_u76EE_u4E2D_u4F7F_u7528Babel_u7684_u51E0_u4E2A_u91CD_u8981_u6A21_u5757_uFF1A" class="headerlink" title="webpack和React项目中使用Babel的几个重要模块："></a>webpack和React项目中使用Babel的几个重要模块：</h6><ul>
 <li><p>babel-core：使用代码调用Babel API进行转码的模块</p>
 </li>
 <li><p>babel-loader：webpack的babel loader</p>
 </li>
 <li><p>babel-polyfill：Babel默认只转换新的JavaScript句法（syntax），而不转换新的API，比如Iterator、Generator、Set、Maps、Proxy、Reflect、Symbol、Promise等全局对象，以及一些定义在全局对象上的方法（比如Object.assign）都不会转码。如果需要这些方法可以运行，则需要使用babel-polyfill</p>
 </li>
-</ul>
-<p>+babel-preset-stage-x：JavaScript 还有一些提案，正在积极通过 TC39（ECMAScript 标准背后的技术委员会）的流程成为标准的一部分。这个流程分为 5（0－4）个阶段。 随着提案得到越多的关注就越有可能被标准采纳，于是他们就继续通过各个阶段，最终在阶段 4 被标准正式采纳。根据项目所需部分，配置和安装对应的级别。</p>
-<ul>
-<li>babel-preset-es2015：用于把ES2015（也叫做ES6）编译成ES5</li>
+<li><p>babel-preset-stage-x：JavaScript 还有一些提案，正在积极通过 TC39（ECMAScript 标准背后的技术委员会）的流程成为标准的一部分。这个流程分为 5（0－4）个阶段。 随着提案得到越多的关注就越有可能被标准采纳，于是他们就继续通过各个阶段，最终在阶段 4 被标准正式采纳。根据项目所需部分，配置和安装对应的级别。</p>
+</li>
+<li><p>babel-preset-es2015：用于把ES2015（也叫做ES6）编译成ES5</p>
+</li>
 <li>babel-preset-react：使用react需要用的模块</li>
 </ul>
-<p>######其他几个重要Babel模块:</p>
-<ul>
+<h6 id="u5176_u4ED6_u51E0_u4E2A_u91CD_u8981Babel_u6A21_u5757_3A"><a href="#u5176_u4ED6_u51E0_u4E2A_u91CD_u8981Babel_u6A21_u5757_3A" class="headerlink" title="其他几个重要Babel模块:"></a>其他几个重要Babel模块:</h6><ul>
 <li>babel-cli：Babel提供cli工具，用于命令行转码。</li>
 <li>babel-register：用于把Babel注册到指定模块中，模块引入后即可运行Babel</li>
 <li>babel-node：如果你要用 node CLI 来运行代码，那么整合 Babel 最简单的方式就是使用 babel-node CLI，它是 node CLI 的替代品。</li>
 </ul>
-<p>######.babelrc<br>.babelrc是Babel的配置文件，存放在项目根目录下。虽然Babel可以webpack.config.js中进行配置，但是babel可以配置的选项比较多，所以支持把babel的配置单独写在名为’.babelrc’的文件中。</p>
-<p>######示例</p>
-<ul>
+<h6 id="babelrc"><a href="#babelrc" class="headerlink" title=".babelrc"></a>.babelrc</h6><p>.babelrc是Babel的配置文件，存放在项目根目录下。虽然Babel可以webpack.config.js中进行配置，但是babel可以配置的选项比较多，所以支持把babel的配置单独写在名为’.babelrc’的文件中。</p>
+<h6 id="u793A_u4F8B"><a href="#u793A_u4F8B" class="headerlink" title="示例"></a>示例</h6><ul>
 <li><p>安装相应的包</p>
 <p>  <code>npm install --save-dev babel-core babel-loader babel-preset-es2015 babel-preset-react</code></p>
 </li>
@@ -375,23 +361,20 @@ package.json中npm start 的配置改成：
 <p>  现在webpack和babel的配置已经准备好，可以开始React项目的搭建</p>
 </li>
 </ul>
-<p>###React</p>
-<ul>
+<h3 id="React"><a href="#React" class="headerlink" title="React"></a>React</h3><ul>
 <li>安装</li>
 </ul>
 <p><code>npm install --save react react-dom</code></p>
 <p>使用ES6的语法，更新Greeter.js并返回一个React组件</p>
 <p>main.js引入并渲染Greeter模块</p>
 <p>运行结果</p>
-<p>###总结：</p>
-<ul>
+<h3 id="u603B_u7ED3_uFF1A"><a href="#u603B_u7ED3_uFF1A" class="headerlink" title="总结："></a>总结：</h3><ul>
 <li>webpack是一个打包工具，主要通过loader和plugins配置，解决项目模块化的问题，配置文件是webpack.config.js</li>
 <li>babel是一个JS编译器，使用babel让项目使用下一代JS进行开发，和支持像React JSX的扩展语言</li>
 <li>webapck和babel可以分开工作也可以共同协助工作</li>
 <li>eslint，stylelint工具可以进行对代码进行检测</li>
 </ul>
-<p>#####一个完整的项目构建示例：</p>
-<ol>
+<h5 id="u4E00_u4E2A_u5B8C_u6574_u7684_u9879_u76EE_u6784_u5EFA_u793A_u4F8B_uFF1A"><a href="#u4E00_u4E2A_u5B8C_u6574_u7684_u9879_u76EE_u6784_u5EFA_u793A_u4F8B_uFF1A" class="headerlink" title="一个完整的项目构建示例："></a>一个完整的项目构建示例：</h5><ol>
 <li>构建项目目录</li>
 <li>npm初始化，创建package.json文件</li>
 <li>配置webpack</li>
@@ -400,8 +383,7 @@ package.json中npm start 的配置改成：
 <li>运行项目</li>
 <li>继续开发…</li>
 </ol>
-<p>###参考文章</p>
-<ul>
+<h3 id="u53C2_u8003_u6587_u7AE0"><a href="#u53C2_u8003_u6587_u7AE0" class="headerlink" title="参考文章"></a>参考文章</h3><ul>
 <li><a href="http://webpackdoc.com/index.html">http://webpackdoc.com/index.html</a> webpack中文文档</li>
 <li><a href="http://www.jianshu.com/p/42e11515c10f###">http://www.jianshu.com/p/42e11515c10f###</a> 入门Webpack，看这篇就够了</li>
 <li><a href="http://www.jianshu.com/p/a552aef2d1a1">http://www.jianshu.com/p/a552aef2d1a1</a> CSS与SASS在webpack中的使用</li>
