@@ -131,6 +131,101 @@
       <div class="body-wrap">
         
   
+    <article id="post-ssh" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/28/ssh/">SSH免密码登陆远程服务器手记</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ul>
+<li>linux</li>
+<li>ssh</li>
+<li>max</li>
+</ul>
+<blockquote>
+<p>SSH 为 Secure Shell 的缩写，由 IETF 的网络小组（Network Working Group）所制定；SSH 为建立在应用层基础上的安全协议。SSH 是目前较可靠，专为远程登录会话和其他网络服务提供安全性的协议</p>
+</blockquote>
+<h4 id="u83B7_u53D6/_u751F_u6210_u516C_u94A5_u548C_u79C1_u94A5"><a href="#u83B7_u53D6/_u751F_u6210_u516C_u94A5_u548C_u79C1_u94A5" class="headerlink" title="获取/生成公钥和私钥"></a>获取/生成公钥和私钥</h4><ol>
+<li>检查本地是否已有公钥和私钥,打开终端并输入</li>
+</ol>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd ~/.ssh</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>本地公钥一般在用户根目录下的.ssh文件夹下面, ~/代表用户根目录</p>
+</blockquote>
+<p>若存在则能成功进入./ssh文件夹，输入<code>ls</code>查看当前文件夹下的内容</p>
+<ul>
+<li>config – ssh配置文件</li>
+<li>id_rsa – 私钥</li>
+<li>id_rsa.pub – 公钥</li>
+<li>known_hosts – ssh会把你每个你访问过计算机的公钥都记录在这里</li>
+</ul>
+<blockquote>
+<p>如果存在公钥私钥则可以无需生成，如果需要清理原来的可以输入  <code>mkdir key_backup$ cp id_rsa* key_backup$ rm id_rsa*</code>然后再重新生成</p>
+</blockquote>
+<p>2.生成公钥私钥<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C “您的邮箱地址”</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>在回车中会提示你输入一个密码，这个密码会在你提交项目时使用，如果为空的话提交项目时则不用输入。</p>
+</blockquote>
+<p>生成成功，可以通过步骤1的命令查看生成好的公钥私钥</p>
+<h4 id="u590D_u5236_u516C_u94A5_u7684_u8FDC_u7A0B_u670D_u52A1_u5668"><a href="#u590D_u5236_u516C_u94A5_u7684_u8FDC_u7A0B_u670D_u52A1_u5668" class="headerlink" title="复制公钥的远程服务器"></a>复制公钥的远程服务器</h4><ol>
+<li><p>登陆服务器并检查用户根目录是否有./ssh</p>
+<ul>
+<li><p>登陆服务器</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh 用户名@主机名(ip/域名)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>登陆后默认是在用户根目录，直接输入<code>ls -a</code>查看是否存在.ssh文件夹，若不存在输入以下命令创建</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir .ssh</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>使用scp将本地的id_rsa.pub到服务器~/.ssh/authorized_keys，新开一个终端并输入</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp ~/.ssh/id_rsa.pub 用户名@主机名:~/.ssh/authorized_keys</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>成功复制后可以在登陆了服务器的终端中输入<code>cat ~/.ssh/authorized_keys</code>查看到公钥</p>
+<p>3.修改服务器端.ssh相关权限<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod 700 ~/.ssh   //&#35753;.ssh&#25991;&#20214;&#22841;&#20855;&#26377;&#35753;&#25152;&#26377;&#32773;&#35835;&#20889;&#21644;&#25191;&#34892;&#30340;&#26435;&#38480;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod 600 ~/.ssh/authorized_keys //&#35753;authorized_keys&#25991;&#20214;&#20855;&#26377;&#35753;&#25152;&#26377;&#32773;&#35835;&#20889;&#30340;&#26435;&#38480;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>关于权限<br>sudo chmod 600 ××× （只有所有者有读和写的权限）<br>sudo chmod 644 ××× （所有者有读和写的权限，组用户只有读的权限）<br>sudo chmod 700 ××× （只有所有者有读和写以及执行的权限）<br>sudo chmod 666 ××× （每个人都有读和写的权限）<br>sudo chmod 777 ××× （每个人都有读和写以及执行的权限）</p>
+</blockquote>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2017/04/28/ssh/" class="archive-article-date">
+  	<time datetime="2017-04-28T11:13:25.000Z" itemprop="datePublished"><i class="icon-clock"></i>2017-04-28</time>
+</a>
+      
+      
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+  
     <article id="post-createProject" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -577,7 +672,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2016 Jacee Chan
+    		&copy; 2017 Jacee Chan
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
