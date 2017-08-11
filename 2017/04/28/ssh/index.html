@@ -8,44 +8,24 @@
   <link rel="dns-prefetch" href="http://jaceechan.github.io">
   <title>SSH免密码登陆远程服务器手记 | JCBlog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="SSH 为 Secure Shell 的缩写，由 IETF 的网络小组（Network Working Group）所制定；SSH 为建立在应用层基础上的安全协议。SSH 是目前较可靠，专为远程登录会话和其他网络服务提供安全性的协议
-
-获取/生成公钥和私钥
-检查本地是否已有公钥和私钥,打开终端并输入
-
-1cd ~/.ssh
-
-本地公钥一般在用户根目录下的.ssh文件夹下面, ~/代表用户根目录">
+  <meta name="description" content="SSH 为 Secure Shell 的缩写，由 IETF 的网络小组（Network Working Group）所制定；SSH 为建立在应用层基础上的安全协议。SSH 是目前较可靠，专为远程登录会话和其他网络服务提供安全性的协议  获取/生成公钥和私钥 检查本地是否已有公钥和私钥,打开终端并输入  1cd ~/.ssh  本地公钥一般在用户根目录下的.ssh文件夹下面, ~/代表用户根目录">
+<meta name="keywords" content="linux,ssh,max">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SSH免密码登陆远程服务器手记">
 <meta property="og:url" content="http://jaceechan.github.io/2017/04/28/ssh/index.html">
 <meta property="og:site_name" content="JCBlog">
-<meta property="og:description" content="SSH 为 Secure Shell 的缩写，由 IETF 的网络小组（Network Working Group）所制定；SSH 为建立在应用层基础上的安全协议。SSH 是目前较可靠，专为远程登录会话和其他网络服务提供安全性的协议
-
-获取/生成公钥和私钥
-检查本地是否已有公钥和私钥,打开终端并输入
-
-1cd ~/.ssh
-
-本地公钥一般在用户根目录下的.ssh文件夹下面, ~/代表用户根目录">
-<meta property="og:updated_time" content="2017-04-28T11:21:17.000Z">
+<meta property="og:description" content="SSH 为 Secure Shell 的缩写，由 IETF 的网络小组（Network Working Group）所制定；SSH 为建立在应用层基础上的安全协议。SSH 是目前较可靠，专为远程登录会话和其他网络服务提供安全性的协议  获取/生成公钥和私钥 检查本地是否已有公钥和私钥,打开终端并输入  1cd ~/.ssh  本地公钥一般在用户根目录下的.ssh文件夹下面, ~/代表用户根目录">
+<meta property="og:updated_time" content="2017-08-11T09:58:14.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SSH免密码登陆远程服务器手记">
-<meta name="twitter:description" content="SSH 为 Secure Shell 的缩写，由 IETF 的网络小组（Network Working Group）所制定；SSH 为建立在应用层基础上的安全协议。SSH 是目前较可靠，专为远程登录会话和其他网络服务提供安全性的协议
-
-获取/生成公钥和私钥
-检查本地是否已有公钥和私钥,打开终端并输入
-
-1cd ~/.ssh
-
-本地公钥一般在用户根目录下的.ssh文件夹下面, ~/代表用户根目录">
+<meta name="twitter:description" content="SSH 为 Secure Shell 的缩写，由 IETF 的网络小组（Network Working Group）所制定；SSH 为建立在应用层基础上的安全协议。SSH 是目前较可靠，专为远程登录会话和其他网络服务提供安全性的协议  获取/生成公钥和私钥 检查本地是否已有公钥和私钥,打开终端并输入  1cd ~/.ssh  本地公钥一般在用户根目录下的.ssh文件夹下面, ~/代表用户根目录">
   
     <link rel="alternative" href="/atom.xml" title="JCBlog" type="application/atom+xml">
   
   
     <link rel="icon" href="http://7q5b06.com1.z0.glb.clouddn.com/LOGO.png?imageView2/1/w/20/h/20">
   
-  <link rel="stylesheet" href="/main.css" type="text/css">
+  <link rel="stylesheet" href="/main.css">
   
 
 </head>
@@ -172,10 +152,10 @@
         <blockquote>
 <p>SSH 为 Secure Shell 的缩写，由 IETF 的网络小组（Network Working Group）所制定；SSH 为建立在应用层基础上的安全协议。SSH 是目前较可靠，专为远程登录会话和其他网络服务提供安全性的协议</p>
 </blockquote>
-<h4 id="u83B7_u53D6/_u751F_u6210_u516C_u94A5_u548C_u79C1_u94A5"><a href="#u83B7_u53D6/_u751F_u6210_u516C_u94A5_u548C_u79C1_u94A5" class="headerlink" title="获取/生成公钥和私钥"></a>获取/生成公钥和私钥</h4><ol>
+<h4 id="获取-生成公钥和私钥"><a href="#获取-生成公钥和私钥" class="headerlink" title="获取/生成公钥和私钥"></a>获取/生成公钥和私钥</h4><ol>
 <li>检查本地是否已有公钥和私钥,打开终端并输入</li>
 </ol>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd ~/.ssh</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cd ~/.ssh</div></pre></td></tr></table></figure>
 <blockquote>
 <p>本地公钥一般在用户根目录下的.ssh文件夹下面, ~/代表用户根目录</p>
 </blockquote>
@@ -189,29 +169,29 @@
 <blockquote>
 <p>如果存在公钥私钥则可以无需生成，如果需要清理原来的可以输入  <code>mkdir key_backup$ cp id_rsa* key_backup$ rm id_rsa*</code>然后再重新生成</p>
 </blockquote>
-<p>2.生成公钥私钥<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C “您的邮箱地址”</span><br></pre></td></tr></table></figure></p>
+<p>2.生成公钥私钥<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh-keygen -t rsa -C “您的邮箱地址”</div></pre></td></tr></table></figure></p>
 <blockquote>
 <p>在回车中会提示你输入一个密码，这个密码会在你提交项目时使用，如果为空的话提交项目时则不用输入。</p>
 </blockquote>
 <p>生成成功，可以通过步骤1的命令查看生成好的公钥私钥</p>
-<h4 id="u590D_u5236_u516C_u94A5_u7684_u8FDC_u7A0B_u670D_u52A1_u5668"><a href="#u590D_u5236_u516C_u94A5_u7684_u8FDC_u7A0B_u670D_u52A1_u5668" class="headerlink" title="复制公钥的远程服务器"></a>复制公钥的远程服务器</h4><ol>
+<h4 id="复制公钥的远程服务器"><a href="#复制公钥的远程服务器" class="headerlink" title="复制公钥的远程服务器"></a>复制公钥的远程服务器</h4><ol>
 <li><p>登陆服务器并检查用户根目录是否有./ssh</p>
 <ul>
 <li><p>登陆服务器</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh 用户名@主机名(ip/域名)</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh 用户名@主机名(ip/域名)</div></pre></td></tr></table></figure>
 </li>
 <li><p>登陆后默认是在用户根目录，直接输入<code>ls -a</code>查看是否存在.ssh文件夹，若不存在输入以下命令创建</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir .ssh</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mkdir .ssh</div></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
 <li><p>使用scp将本地的id_rsa.pub到服务器~/.ssh/authorized_keys，新开一个终端并输入</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp ~/.ssh/id_rsa.pub 用户名@主机名:~/.ssh/authorized_keys</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">scp ~/.ssh/id_rsa.pub 用户名@主机名:~/.ssh/authorized_keys</div></pre></td></tr></table></figure>
 </li>
 </ol>
 <p>成功复制后可以在登陆了服务器的终端中输入<code>cat ~/.ssh/authorized_keys</code>查看到公钥</p>
-<p>3.修改服务器端.ssh相关权限<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod 700 ~/.ssh   //&#35753;.ssh&#25991;&#20214;&#22841;&#20855;&#26377;&#35753;&#25152;&#26377;&#32773;&#35835;&#20889;&#21644;&#25191;&#34892;&#30340;&#26435;&#38480;</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod 600 ~/.ssh/authorized_keys //&#35753;authorized_keys&#25991;&#20214;&#20855;&#26377;&#35753;&#25152;&#26377;&#32773;&#35835;&#20889;&#30340;&#26435;&#38480;</span><br></pre></td></tr></table></figure>
+<p>3.修改服务器端.ssh相关权限<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">chmod 700 ~/.ssh   //让.ssh文件夹具有让所有者读写和执行的权限</div></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">chmod 600 ~/.ssh/authorized_keys //让authorized_keys文件具有让所有者读写的权限</div></pre></td></tr></table></figure>
 <blockquote>
 <p>关于权限<br>sudo chmod 600 ××× （只有所有者有读和写的权限）<br>sudo chmod 644 ××× （所有者有读和写的权限，组用户只有读的权限）<br>sudo chmod 700 ××× （只有所有者有读和写以及执行的权限）<br>sudo chmod 666 ××× （每个人都有读和写的权限）<br>sudo chmod 777 ××× （每个人都有读和写以及执行的权限）</p>
 </blockquote>
@@ -232,7 +212,7 @@
       
 	<div class="article-category tagcloud">
 	<i class="icon-price-tags"></i>
-	<a class="article-category-link" href="/categories/服务器/">服务器</a>
+	<a class="article-category-link" href="/categories/后端/">后端</a>
 	</div>
 
 
@@ -243,6 +223,15 @@
 
   
 <nav id="article-nav">
+  
+    <a href="/2017/08/11/mongoDB_Aggregation1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          mongoDB查询进阶--聚合管道(一)
+        
+      </div>
+    </a>
   
   
     <a href="/2016/12/21/createProject/" id="article-nav-older" class="article-nav-link-wrap">
@@ -331,7 +320,7 @@
 	}
 </script>
 
-<script src="/./main.js" type="text/javascript"></script>
+<script src="/./main.js"></script>
 
 
 <script type="text/x-mathjax-config">
@@ -378,7 +367,7 @@ MathJax.Hub.Queue(function() {
     
     	<section class="tools-section tools-section-tag">
     			<div class="widget tagcloud" id="js-tagcloud">
-    				<a href="/tags/babel/" style="font-size: 10px;">babel</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/max/" style="font-size: 10px;">max</a> <a href="/tags/react/" style="font-size: 10px;">react</a> <a href="/tags/ssh/" style="font-size: 10px;">ssh</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a> <a href="/tags/wechat/" style="font-size: 10px;">wechat</a> <a href="/tags/微信/" style="font-size: 10px;">微信</a> <a href="/tags/微信公众号/" style="font-size: 10px;">微信公众号</a> <a href="/tags/项目构建/" style="font-size: 10px;">项目构建</a>
+    				<a href="/tags/aggregation/" style="font-size: 20px;">aggregation</a> <a href="/tags/babel/" style="font-size: 10px;">babel</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/max/" style="font-size: 10px;">max</a> <a href="/tags/mongoDB/" style="font-size: 20px;">mongoDB</a> <a href="/tags/mongoose/" style="font-size: 20px;">mongoose</a> <a href="/tags/noSQL/" style="font-size: 20px;">noSQL</a> <a href="/tags/react/" style="font-size: 10px;">react</a> <a href="/tags/ssh/" style="font-size: 10px;">ssh</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a> <a href="/tags/wechat/" style="font-size: 10px;">wechat</a> <a href="/tags/微信/" style="font-size: 10px;">微信</a> <a href="/tags/微信公众号/" style="font-size: 10px;">微信公众号</a> <a href="/tags/项目构建/" style="font-size: 10px;">项目构建</a>
     			</div>
     	</section>
     

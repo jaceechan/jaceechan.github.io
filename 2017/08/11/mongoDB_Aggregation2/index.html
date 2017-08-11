@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <link rel="dns-prefetch" href="http://jaceechan.github.io">
+  <title>mongoDB查询进阶--聚合管道(二) | JCBlog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="mongoDB查询进阶–聚合管道(二)  上篇最后说到管道操作符，本篇文章将详细说一下管道操作符。  mongoDB查询进阶–聚合管道(一)回顾 什么是管道操作符(Aggregation Pipeline Operators)mongoDB有4类操作符用于文档的操作，例如find查询里面会用到的\$gte，\$in等。操作符以$开头，分为查询操作符，更新操作符，管道操作符，查询修饰符4大类。其中管">
+<meta name="keywords" content="mongoDB,mongoose,noSQL,aggregation">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mongoDB查询进阶--聚合管道(二)">
+<meta property="og:url" content="http://jaceechan.github.io/2017/08/11/mongoDB_Aggregation2/index.html">
+<meta property="og:site_name" content="JCBlog">
+<meta property="og:description" content="mongoDB查询进阶–聚合管道(二)  上篇最后说到管道操作符，本篇文章将详细说一下管道操作符。  mongoDB查询进阶–聚合管道(一)回顾 什么是管道操作符(Aggregation Pipeline Operators)mongoDB有4类操作符用于文档的操作，例如find查询里面会用到的\$gte，\$in等。操作符以$开头，分为查询操作符，更新操作符，管道操作符，查询修饰符4大类。其中管">
+<meta property="og:updated_time" content="2017-08-11T10:27:03.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="mongoDB查询进阶--聚合管道(二)">
+<meta name="twitter:description" content="mongoDB查询进阶–聚合管道(二)  上篇最后说到管道操作符，本篇文章将详细说一下管道操作符。  mongoDB查询进阶–聚合管道(一)回顾 什么是管道操作符(Aggregation Pipeline Operators)mongoDB有4类操作符用于文档的操作，例如find查询里面会用到的\$gte，\$in等。操作符以$开头，分为查询操作符，更新操作符，管道操作符，查询修饰符4大类。其中管">
+  
+    <link rel="alternative" href="/atom.xml" title="JCBlog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="http://7q5b06.com1.z0.glb.clouddn.com/LOGO.png?imageView2/1/w/20/h/20">
+  
+  <link rel="stylesheet" href="/main.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+      <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img src="http://7q5b06.com1.z0.glb.clouddn.com/LOGO.png?imageView2/1/w/200/h/200" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Jacee Chan</a></h1>
+		</hgroup>
+
+		
+
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">Home</a></li>
+	        
+				<li><a href="/archives">Aticles</a></li>
+	        
+			</ul>
+		</nav>
+		<nav class="header-smart-menu">
+	        
+    		
+    			
+    			<a class="js-smart-menu" data-idx="0" href="javascript:void(0)"> All </a>
+    			
+    			
+            
+    			
+    			<a class="js-smart-menu" data-idx="1" href="javascript:void(0)"> Tags </a>
+    			
+    			
+            
+    			
+    			<a class="js-smart-menu" data-idx="2" href="javascript:void(0)"> About Me </a>
+    			
+    			
+            
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="github" target="_blank" href="https://github.com/jaceechan" title="github">github</a>
+		        
+					<a class="weibo" target="_blank" href="http://www.weibo.com/jaceechan" title="weibo">weibo</a>
+		        
+			</div>
+		</nav>
+	</header>		
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"><i class="icon-list"></i></div>
+  		<h1 class="header-author js-mobile-header hide">Jacee Chan</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				
+					<img src="http://7q5b06.com1.z0.glb.clouddn.com/LOGO.png?imageView2/1/w/200/h/200" class="js-avatar">
+				
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Jacee Chan</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">Home</a></li>
+		        
+					<li><a href="/archives">Aticles</a></li>
+		        
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/jaceechan" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="http://www.weibo.com/jaceechan" title="weibo">weibo</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap">
+        <article id="post-mongoDB_Aggregation2" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      mongoDB查询进阶--聚合管道(二)
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>mongoDB查询进阶–聚合管道(二)</p>
+<blockquote>
+<p>上篇最后说到管道操作符，本篇文章将详细说一下管道操作符。</p>
+</blockquote>
+<p><a href="2017/08/11/mongoDB_Aggregation1/">mongoDB查询进阶–聚合管道(一)回顾</a></p>
+<h1 id="什么是管道操作符-Aggregation-Pipeline-Operators"><a href="#什么是管道操作符-Aggregation-Pipeline-Operators" class="headerlink" title="什么是管道操作符(Aggregation Pipeline Operators)"></a>什么是管道操作符(Aggregation Pipeline Operators)</h1><p>mongoDB有4类操作符用于文档的操作，例如find查询里面会用到的\$gte，\$in等。操作符以$开头，分为查询操作符，更新操作符，管道操作符，查询修饰符4大类。其中管道操作符是用于聚合管道中的操作符。</p>
+<h1 id="常用管道操作符"><a href="#常用管道操作符" class="headerlink" title="常用管道操作符"></a>常用管道操作符</h1><table>
+<thead>
+<tr>
+<th style="text-align:left">操作符</th>
+<th style="text-align:left">简述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">$match</td>
+<td style="text-align:left">匹配操作符，用于对文档集合进行筛选</td>
+</tr>
+<tr>
+<td style="text-align:left">$project</td>
+<td style="text-align:left">投射操作符，用于重构每一个文档的字段，可以提取字段，重命名字段，甚至可以对原有字段进行操作后新增字段</td>
+</tr>
+<tr>
+<td style="text-align:left">$sort</td>
+<td style="text-align:left">排序操作符，用于根据一个或多个字段对文档进行排序</td>
+</tr>
+<tr>
+<td style="text-align:left">$limit</td>
+<td style="text-align:left">限制操作符，用于限制返回文档的数量</td>
+</tr>
+<tr>
+<td style="text-align:left">$skip</td>
+<td style="text-align:left">跳过操作符，用于跳过指定数量的文档</td>
+</tr>
+<tr>
+<td style="text-align:left">$count</td>
+<td style="text-align:left">统计操作符，用于统计文档的数量</td>
+</tr>
+<tr>
+<td style="text-align:left">$group</td>
+<td style="text-align:left">分组操作符，用于对文档集合进行分组</td>
+</tr>
+<tr>
+<td style="text-align:left">$unwind</td>
+<td style="text-align:left">拆分操作符，用于将数组中的每一个值拆分为单独的文档</td>
+</tr>
+<tr>
+<td style="text-align:left">$lookup</td>
+<td style="text-align:left">连接操作符，用于连接同一个数据库中另一个集合，并获取指定的文档，类似于populate</td>
+</tr>
+</tbody>
+</table>
+<p><a href="https://docs.mongodb.com/manual/reference/operator/aggregation/" target="_blank" rel="external">更多操作符介绍详见官网：https://docs.mongodb.com/manual/reference/operator/aggregation/</a></p>
+<h1 id="管道操作符详解"><a href="#管道操作符详解" class="headerlink" title="管道操作符详解"></a>管道操作符详解</h1><p>假设有一个保存用户的集合Users，一个文章的集合Articles，数据大致如下：<br>users:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">[</div><div class="line">    &#123; name: 'John', age: 16, sex: male, city: guangzhou, _id: 1, ...&#125;,</div><div class="line">    &#123; name: 'Rose', age: 18, sex: female, city: beijing, _id: 2, ...&#125;,</div><div class="line">    &#123; name: 'Jack', age: 29, sex: male, city: guangzhou, _id: 3, ...&#125;,</div><div class="line">    &#123; name: 'Allen', age: 18, sex: female, city: beijing, _id: 4, ...&#125;,</div><div class="line">    &#123; name: 'Cruz', age: 22, sex: male, city: guangzhou, _id: 5, ...&#125;,</div><div class="line">    &#123; name: 'Peter', age: 18, sex: male, city: guangzhou, _id: 6, ...&#125;,</div><div class="line">    &#123; name: 'Kelly', age: 23, sex: female, city: shanghai, _id: 7, ...&#125;,</div><div class="line">    ...</div><div class="line">]</div></pre></td></tr></table></figure></p>
+<p>articles:<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">[</div><div class="line">    &#123; title: 'this is article A', author: 'John', _id: 1, ... &#125;,</div><div class="line">    &#123; title: 'this is article B', author: 'Jack', _id: 2, ... &#125;,</div><div class="line">    &#123; title: 'this is article C', author: 'Rose', _id: 3, ... &#125;,</div><div class="line">    &#123; title: 'this is article D', author: 'John', _id: 4, ... &#125;,</div><div class="line">    &#123; title: 'this is article E', author: 'John', _id: 5, ... &#125;,</div><div class="line">    ...</div><div class="line">]</div></pre></td></tr></table></figure></p>
+<h2 id="match-匹配操作符"><a href="#match-匹配操作符" class="headerlink" title="$match 匹配操作符"></a>$match 匹配操作符</h2><h5 id="说明："><a href="#说明：" class="headerlink" title="说明："></a>说明：</h5><blockquote>
+<p>用于重构每一个文档的字段，可以提取字段，重命名字段，甚至可以对原有字段进行操作后新增字段</p>
+</blockquote>
+<h5 id="用法"><a href="#用法" class="headerlink" title="用法:"></a>用法:</h5><figure class="highlight xquery"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123; $match: &#123; &lt;query&gt; &#125; &#125;</div></pre></td></tr></table></figure>
+<h5 id="示例："><a href="#示例：" class="headerlink" title="示例："></a>示例：</h5><ul>
+<li>查询用户年龄是18岁的用户<figure class="highlight less"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">db</span><span class="selector-class">.users</span><span class="selector-class">.aggregate</span>([&#123; $<span class="attribute">match </span>: &#123; <span class="attribute">age </span>: <span class="string">"18"</span> &#125; &#125;]);</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="project-投射操作符"><a href="#project-投射操作符" class="headerlink" title="$project 投射操作符"></a>$project 投射操作符</h2><h5 id="说明：-1"><a href="#说明：-1" class="headerlink" title="说明："></a>说明：</h5><blockquote>
+<p>用于对文档集合进行筛选</p>
+</blockquote>
+<h5 id="用法-1"><a href="#用法-1" class="headerlink" title="用法:"></a>用法:</h5><figure class="highlight clojure"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123; $project: &#123; &lt;specification(<span class="name">s</span>)&gt; &#125; &#125;</div></pre></td></tr></table></figure>
+<p>specification的规则</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">规则</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">&lt;字段名&gt;: 1 or true</td>
+<td style="text-align:left">选择需要返回什么字段</td>
+</tr>
+<tr>
+<td style="text-align:left">_id: 0 or false</td>
+<td style="text-align:left">不返回_id(默认返回)</td>
+</tr>
+<tr>
+<td style="text-align:left">&lt;字段名&gt;: 表达式</td>
+<td style="text-align:left">使用表达式，可以用于重命名字段，或对其值进行操作，或新增字段</td>
+</tr>
+<tr>
+<td style="text-align:left">&lt;字段名&gt;: 0 or false</td>
+<td style="text-align:left">选择需要不返回什么字段，注意：当使用这种用法时，就不要用上面的方法</td>
+</tr>
+</tbody>
+</table>
+<h5 id="示例1："><a href="#示例1：" class="headerlink" title="示例1："></a>示例1：</h5><ul>
+<li>用户集合投射用户姓名</li>
+<li>不返回_id<figure class="highlight less"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">db</span><span class="selector-class">.users</span><span class="selector-class">.aggregate</span>([&#123; $<span class="attribute">project </span>: &#123; <span class="attribute">name</span>: <span class="number">1</span> &#125; &#125;]);</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h5 id="示例2："><a href="#示例2：" class="headerlink" title="示例2："></a>示例2：</h5><ul>
+<li>将_id重命名为userId</li>
+<li>不返回<em>id</em><figure class="highlight less"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">db</span><span class="selector-class">.users</span><span class="selector-class">.aggregate</span>([&#123; $<span class="attribute">project </span>: &#123; <span class="attribute">ueserId</span>: <span class="string">'$_id'</span>, <span class="attribute">_id</span>: <span class="number">0</span> &#125; &#125;]);</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h5 id="示例3："><a href="#示例3：" class="headerlink" title="示例3："></a>示例3：</h5><ul>
+<li>返回新字段username,并使用表达式让它的值为name的大写。<figure class="highlight xquery"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">db.users.aggregate([ </div><div class="line">    &#123; </div><div class="line">        $project : &#123;</div><div class="line">            name: <span class="number">1</span>, </div><div class="line">            username: &#123; $toUpper: <span class="string">'$name'</span> &#125;, </div><div class="line">            _id: <span class="number">0</span> </div><div class="line">        &#125; </div><div class="line">    &#125; </div><div class="line">]);</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<blockquote>
+<p>关于管道表达式：最简单的“\$project”表达式是包含和排除字段(如: { name: 1 })，以及字段名称\$fieldname(如: { userId: ‘\$_id’ })。除此以外，还可以使用一些操作符(如: \$toUpper)构成更丰富的表达式，将多个字面量和变量组合在一起使用，得到更多有意思的值，更多表达式的说明和里面使用的操作符会在另外的篇章中详细阐述。</p>
+</blockquote>
+<h2 id="sort-排序操作符"><a href="#sort-排序操作符" class="headerlink" title="$sort   排序操作符"></a>$sort   排序操作符</h2><h5 id="说明：-2"><a href="#说明：-2" class="headerlink" title="说明："></a>说明：</h5><blockquote>
+<p>用于根据一个或多个字段对文档进行排序</p>
+</blockquote>
+<h5 id="用法："><a href="#用法：" class="headerlink" title="用法："></a>用法：</h5><figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123; $<span class="keyword">sor</span><span class="variable">t:</span> &#123; <span class="symbol">&lt;field1&gt;</span>: &lt;<span class="keyword">sort</span> order&gt;, <span class="symbol">&lt;field2&gt;</span>: &lt;<span class="keyword">sort</span> order&gt; ... &#125; &#125;</div></pre></td></tr></table></figure>
+<h5 id="示例：-1"><a href="#示例：-1" class="headerlink" title="示例："></a>示例：</h5><ul>
+<li>users集合按照年龄age从低到高排序<figure class="highlight less"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">db</span><span class="selector-class">.users</span><span class="selector-class">.aggregate</span>([&#123; $<span class="attribute">sort </span>: &#123; <span class="attribute">age</span>: <span class="number">1</span> &#125; &#125;]);</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="limit-限制操作符"><a href="#limit-限制操作符" class="headerlink" title="$limit  限制操作符"></a>$limit  限制操作符</h2><h5 id="说明：-3"><a href="#说明：-3" class="headerlink" title="说明："></a>说明：</h5><blockquote>
+<p>用于限制返回文档的数量</p>
+</blockquote>
+<h5 id="用法：-1"><a href="#用法：-1" class="headerlink" title="用法："></a>用法：</h5><figure class="highlight gams"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123; <span class="symbol">$</span>limit: &lt;<span class="keyword">positive</span> <span class="keyword">integer</span>&gt; &#125;</div></pre></td></tr></table></figure>
+<h5 id="示例：-2"><a href="#示例：-2" class="headerlink" title="示例："></a>示例：</h5><ul>
+<li>返回5篇article<figure class="highlight scss"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">db<span class="selector-class">.articles</span><span class="selector-class">.aggregate</span>(&#123; <span class="variable">$limit</span> : <span class="number">3</span> &#125;);</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="skip-跳过操作符"><a href="#skip-跳过操作符" class="headerlink" title="$skip   跳过操作符"></a>$skip   跳过操作符</h2><h5 id="说明：-4"><a href="#说明：-4" class="headerlink" title="说明："></a>说明：</h5><blockquote>
+<p>用于跳过指定数量的文档</p>
+</blockquote>
+<h5 id="用法：-2"><a href="#用法：-2" class="headerlink" title="用法："></a>用法：</h5><figure class="highlight gams"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123; <span class="symbol">$</span>skip: &lt;<span class="keyword">positive</span> <span class="keyword">integer</span>&gt; &#125;</div></pre></td></tr></table></figure>
+<h5 id="示例：-3"><a href="#示例：-3" class="headerlink" title="示例："></a>示例：</h5><ul>
+<li>跳过1个文档</li>
+</ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">db</span><span class="selector-class">.users</span><span class="selector-class">.aggregate</span>(<span class="selector-attr">[&#123; $skip : 1 &#125;]</span>);</div></pre></td></tr></table></figure>
+<h2 id="count-统计操作符"><a href="#count-统计操作符" class="headerlink" title="$count  统计操作符"></a>$count  统计操作符</h2><h5 id="说明：-5"><a href="#说明：-5" class="headerlink" title="说明："></a>说明：</h5><blockquote>
+<p>用于统计文档的数量</p>
+</blockquote>
+<h5 id="用法：-3"><a href="#用法：-3" class="headerlink" title="用法："></a>用法：</h5><figure class="highlight applescript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123; $<span class="built_in">count</span>: &lt;<span class="built_in">string</span>&gt; &#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>string是统计之后输出统计结果的字段名</p>
+</blockquote>
+<h5 id="示例：-4"><a href="#示例：-4" class="headerlink" title="示例："></a>示例：</h5><ul>
+<li>统计文章的总数，以totalArticle返回<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">db</span><span class="selector-class">.articles</span><span class="selector-class">.aggregate</span>(<span class="selector-attr">[&#123; totalArticle : 1 &#125;]</span>);</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="group-分组操作符"><a href="#group-分组操作符" class="headerlink" title="$group  分组操作符"></a>$group  分组操作符</h2><h5 id="说明：-6"><a href="#说明：-6" class="headerlink" title="说明："></a>说明：</h5><blockquote>
+<p>用于对文档集合进行分组</p>
+</blockquote>
+<h5 id="用法：-4"><a href="#用法：-4" class="headerlink" title="用法："></a>用法：</h5><figure class="highlight pf"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123; <span class="variable">$group</span>: &#123; _id: <span class="variable">&lt;expression&gt;</span>, <span class="variable">&lt;field1&gt;</span>: &#123; <span class="variable">&lt;accumulator1&gt;</span> : <span class="variable">&lt;expression1&gt;</span> &#125;, ... &#125; &#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>_id是必须的，用作分组的依据条件</p>
+</blockquote>
+<h5 id="示例：-5"><a href="#示例：-5" class="headerlink" title="示例："></a>示例：</h5><ul>
+<li>将用户(users)按性别（sex）分组<figure class="highlight less"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">db</span><span class="selector-class">.users</span><span class="selector-class">.aggregate</span>([&#123; $<span class="attribute">group </span>: &#123; <span class="attribute">_id</span>: <span class="string">'$sex'</span> &#125; &#125;]);</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>返回结果：<br><figure class="highlight scheme"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[</div><div class="line">  &#123; _id: <span class="symbol">'male</span>' &#125;,</div><div class="line">  &#123; _id: <span class="symbol">'female</span>' &#125;</div><div class="line">]</div></pre></td></tr></table></figure></p>
+<h5 id="进阶示例："><a href="#进阶示例：" class="headerlink" title="进阶示例："></a>进阶示例：</h5><ul>
+<li>将用户(users)按性别（sex）分组</li>
+<li>分组后使用计算各自性别的平均年龄</li>
+<li>统计不同的性别的人数，并以count返回<figure class="highlight xquery"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">db.users.aggregate([</div><div class="line">    &#123; </div><div class="line">        $group : &#123;</div><div class="line">            _id: <span class="string">'$sex'</span>, </div><div class="line">            avgAge: &#123; $avg: <span class="string">'$age'</span> &#125;, </div><div class="line">            conut: &#123; $sum: <span class="number">1</span> &#125; </div><div class="line">        &#125; </div><div class="line">    &#125;</div><div class="line">]);</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>返回结果：<br><figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[</div><div class="line">  &#123; <span class="string">_id:</span> <span class="string">'male'</span>, <span class="string">avgAge:</span> &lt;男性平均年龄&gt;, <span class="string">count:</span> &lt;男性人数&gt; &#125;,</div><div class="line">  &#123; <span class="string">_id:</span> <span class="string">'female'</span>, <span class="string">avgAge:</span> &lt;女性平均年龄&gt;, <span class="string">count:</span> &lt;女性人数&gt; &#125;</div><div class="line">]</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>此处用到的表达式 { \$avg: ‘\$age’ } 用于求平均年龄，\$avg是求均值的操作符，\$sum用于汇总， 都只能在\$group中使用，mongoDB3.2以上版本则还可以在\$project中使用，详细会在另外的篇章中阐述。</p>
+</blockquote>
+<h2 id="unwind-拆分操作符"><a href="#unwind-拆分操作符" class="headerlink" title="$unwind 拆分操作符"></a>$unwind 拆分操作符</h2><h5 id="说明：-7"><a href="#说明：-7" class="headerlink" title="说明："></a>说明：</h5><blockquote>
+<p>用于将数组中的每一个值拆分为单独的文档</p>
+</blockquote>
+<h5 id="用法：-5"><a href="#用法：-5" class="headerlink" title="用法："></a>用法：</h5><figure class="highlight pf"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123; <span class="variable">$unwind</span>: <span class="variable">&lt;field path&gt;</span> &#125;</div></pre></td></tr></table></figure>
+<h5 id="3-2-版本的用法："><a href="#3-2-版本的用法：" class="headerlink" title="3.2+版本的用法："></a>3.2+版本的用法：</h5><blockquote>
+<p>增加icludeArrayIndex,preserveNullAndEmptyArrays两个可选配置</p>
+</blockquote>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  $unwind:</div><div class="line">    &#123;</div><div class="line"><span class="symbol">      path:</span> <span class="params">&lt;field path&gt;</span>,</div><div class="line"><span class="symbol">      includeArrayIndex:</span> <span class="params">&lt;string&gt;</span>,</div><div class="line"><span class="symbol">      preserveNullAndEmptyArrays:</span> <span class="params">&lt;boolean&gt;</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>path</td>
+<td>string</td>
+<td>必填，数组的字段名，指定需要拆分的字段</td>
+</tr>
+<tr>
+<td>includeArrayIndex</td>
+<td>string</td>
+<td>可选，定义返回的字段名，返回的值是拆分前值在原数组的位置</td>
+</tr>
+<tr>
+<td>preserveNullAndEmptyArrays</td>
+<td>boolean</td>
+<td>可选，配置在path的值为空或缺失的情况下是否拆分， 默认false</td>
+</tr>
+</tbody>
+</table>
+<h5 id="示例：-6"><a href="#示例：-6" class="headerlink" title="示例："></a>示例：</h5><p>假设articles文档集合是这样：<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123; <span class="attribute">title</span>: <span class="string">'this is article A'</span>, author: <span class="string">'John'</span>, _id: <span class="number">1</span>, comments: [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>]&#125;</div></pre></td></tr></table></figure></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">db</span><span class="selector-class">.articles</span><span class="selector-class">.aggregate</span>(<span class="selector-attr">[&#123; $unwind: '$comments' &#125;]</span>);</div></pre></td></tr></table></figure>
+<p>结果：<br><figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[</div><div class="line">    &#123; <span class="string">title:</span> <span class="string">'this is article A'</span>, <span class="string">author:</span> <span class="string">'John'</span>, <span class="string">_id:</span> <span class="number">1</span>, <span class="string">comments:</span> <span class="string">'a'</span>&#125;,</div><div class="line">    &#123; <span class="string">title:</span> <span class="string">'this is article A'</span>, <span class="string">author:</span> <span class="string">'John'</span>, <span class="string">_id:</span> <span class="number">1</span>, <span class="string">comments:</span> <span class="string">'b'</span>&#125;,</div><div class="line">    &#123; <span class="string">title:</span> <span class="string">'this is article A'</span>, <span class="string">author:</span> <span class="string">'John'</span>, <span class="string">_id:</span> <span class="number">1</span>, <span class="string">comments:</span> <span class="string">'c'</span>&#125;,</div><div class="line">]</div></pre></td></tr></table></figure></p>
+<h5 id="进阶示例（v3-2-）："><a href="#进阶示例（v3-2-）：" class="headerlink" title="进阶示例（v3.2+）："></a>进阶示例（v3.2+）：</h5><p>假设articles文档集合是这样：<br><figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[</div><div class="line">    &#123; <span class="string">title:</span> <span class="string">'this is article A'</span>, <span class="string">author:</span> <span class="string">'John'</span>, <span class="string">_id:</span> <span class="number">1</span>, <span class="string">comments:</span> [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>] &#125;</div><div class="line">    &#123; <span class="string">title:</span> <span class="string">'this is article B'</span>, <span class="string">author:</span> <span class="string">'Jack'</span>, <span class="string">_id:</span> <span class="number">2</span> &#125;,</div><div class="line">    &#123; <span class="string">title:</span> <span class="string">'this is article C'</span>, <span class="string">author:</span> <span class="string">'Amy'</span>, <span class="string">_id:</span> <span class="number">3</span>, <span class="string">comments:</span> [] &#125;,</div><div class="line">    &#123; <span class="string">title:</span> <span class="string">'this is article D'</span>, <span class="string">author:</span> <span class="string">'Lam'</span>, <span class="string">_id:</span> <span class="number">4</span>, <span class="string">comments:</span> <span class="literal">null</span> &#125;,</div><div class="line">]</div></pre></td></tr></table></figure></p>
+<p>操作：<br><figure class="highlight less"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">db</span><span class="selector-class">.articles</span><span class="selector-class">.aggregate</span>([</div><div class="line">    &#123; </div><div class="line">        $<span class="attribute">unwind</span>: &#123;</div><div class="line">            <span class="attribute">path</span>: <span class="string">'$comments'</span>,</div><div class="line">            <span class="attribute">includeArrayIndex</span>: <span class="string">'arrayIndex'</span>,</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">]);</div></pre></td></tr></table></figure></p>
+<p>结果：<br><figure class="highlight scheme"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[</div><div class="line">    &#123; title: <span class="symbol">'this</span> is article A', author: <span class="symbol">'John</span>', _id: <span class="number">1</span>, comments: <span class="symbol">'a</span>', arrayIndex: NumberLong(<span class="name">0</span>) &#125;,</div><div class="line">    &#123; title: <span class="symbol">'this</span> is article A', author: <span class="symbol">'John</span>', _id: <span class="number">1</span>, comments: <span class="symbol">'b</span>', arrayIndex: NumberLong(<span class="name">1</span>) &#125;,</div><div class="line">    &#123; title: <span class="symbol">'this</span> is article A', author: <span class="symbol">'John</span>', _id: <span class="number">1</span>, comments: <span class="symbol">'c</span>', arrayIndex: NumberLong(<span class="name">2</span>) &#125;,</div><div class="line">]</div></pre></td></tr></table></figure></p>
+<p>操作：<br><figure class="highlight less"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">db</span><span class="selector-class">.articles</span><span class="selector-class">.aggregate</span>([</div><div class="line">    &#123; </div><div class="line">        $<span class="attribute">unwind</span>: &#123;</div><div class="line">            <span class="attribute">path</span>: <span class="string">'$comments'</span>,</div><div class="line">            <span class="attribute">preserveNullAndEmptyArrays</span>: true,</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">]);</div></pre></td></tr></table></figure></p>
+<p>结果：<br><figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">[</div><div class="line">    &#123; <span class="string">title:</span> <span class="string">'this is article A'</span>, <span class="string">author:</span> <span class="string">'John'</span>, <span class="string">_id:</span> <span class="number">1</span>, <span class="string">comments:</span> <span class="string">'a'</span> &#125;,</div><div class="line">    &#123; <span class="string">title:</span> <span class="string">'this is article A'</span>, <span class="string">author:</span> <span class="string">'John'</span>, <span class="string">_id:</span> <span class="number">1</span>, <span class="string">comments:</span> <span class="string">'b'</span> &#125;,</div><div class="line">    &#123; <span class="string">title:</span> <span class="string">'this is article A'</span>, <span class="string">author:</span> <span class="string">'John'</span>, <span class="string">_id:</span> <span class="number">1</span>, <span class="string">comments:</span> <span class="string">'c'</span> &#125;,</div><div class="line">    &#123; <span class="string">title:</span> <span class="string">'this is article B'</span>, <span class="string">author:</span> <span class="string">'Jack'</span>, <span class="string">_id:</span> <span class="number">2</span> &#125;,</div><div class="line">    &#123; <span class="string">title:</span> <span class="string">'this is article C'</span>, <span class="string">author:</span> <span class="string">'Amy'</span>, <span class="string">_id:</span> <span class="number">3</span> &#125;,</div><div class="line">    &#123; <span class="string">title:</span> <span class="string">'this is article C'</span>, <span class="string">author:</span> <span class="string">'Amy'</span>, <span class="string">_id:</span> <span class="number">3</span>, <span class="string">comments:</span> <span class="literal">null</span> &#125;</div><div class="line">]</div></pre></td></tr></table></figure></p>
+<h2 id="lookup-连接操作符"><a href="#lookup-连接操作符" class="headerlink" title="$lookup 连接操作符"></a>$lookup 连接操作符</h2><h5 id="说明：-8"><a href="#说明：-8" class="headerlink" title="说明："></a>说明：</h5><blockquote>
+<p>用于连接同一个数据库中另一个集合，并获取指定的文档，类似于populate</p>
+</blockquote>
+<h5 id="用法：-6"><a href="#用法：-6" class="headerlink" title="用法："></a>用法：</h5><figure class="highlight smali"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">   $lookup:</div><div class="line">     &#123;</div><div class="line">       from: &lt;collection to join&gt;,</div><div class="line">       localField: &lt;field from the input documents&gt;,</div><div class="line">       foreignField: &lt;field from the documents of the <span class="string">"from"</span> collection&gt;,</div><div class="line">       as: &lt;output<span class="built_in"> array </span>field&gt;</div><div class="line">     &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>from</td>
+<td>需要关联的集合名</td>
+</tr>
+<tr>
+<td>localField</td>
+<td>本集合中需要查找的字段</td>
+</tr>
+<tr>
+<td>foreignField</td>
+<td>另外一个集合中需要关联的字段</td>
+</tr>
+<tr>
+<td>as</td>
+<td>输出的字段名</td>
+</tr>
+</tbody>
+</table>
+<h5 id="示例：-7"><a href="#示例：-7" class="headerlink" title="示例："></a>示例：</h5><ul>
+<li>ariticles中的author关联到user表</li>
+<li>authoer字段返回详细的用户的信息</li>
+</ul>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">db</span><span class="selector-class">.articles</span><span class="selector-class">.aggregate</span>([</div><div class="line">  &#123;</div><div class="line">    $<span class="attribute">lookup</span>:</div><div class="line">      &#123;</div><div class="line">        <span class="attribute">from</span>: <span class="string">"users"</span>,</div><div class="line">        <span class="attribute">localField</span>: <span class="string">"author"</span>,</div><div class="line">        <span class="attribute">foreignField</span>: <span class="string">"name"</span>,</div><div class="line">        <span class="attribute">as</span>: <span class="string">"author"</span></div><div class="line">      &#125;</div><div class="line">  &#125;</div><div class="line">])</div></pre></td></tr></table></figure>
+<p>结果：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div></pre></td><td class="code"><pre><div class="line">[</div><div class="line">    &#123; </div><div class="line">        title: 'this is article A', </div><div class="line">        author: &#123; </div><div class="line">            name: 'John',</div><div class="line">            age: 16,</div><div class="line">            sex: male,</div><div class="line">            city: guangzhou,</div><div class="line">            _id: 1, </div><div class="line">            ...</div><div class="line">        &#125;, </div><div class="line">        _id: 1, </div><div class="line">        ... </div><div class="line">    &#125;,</div><div class="line">    &#123; </div><div class="line">        title: 'this is article B', </div><div class="line">        author: &#123; </div><div class="line">            name: 'Jack',</div><div class="line">            age: 29,</div><div class="line">            sex: male,</div><div class="line">            city: guangzhou,</div><div class="line">            _id: 3, </div><div class="line">            ...</div><div class="line">        &#125;, </div><div class="line">        _id: 2, </div><div class="line">        ... </div><div class="line">    &#125;,</div><div class="line">    &#123; </div><div class="line">        title: 'this is article C', </div><div class="line">        author: &#123; </div><div class="line">            name: 'Rose',</div><div class="line">            age: 18,</div><div class="line">            sex: male,</div><div class="line">            city: beijing,</div><div class="line">            _id: 2, </div><div class="line">            ...</div><div class="line">        &#125;, </div><div class="line">        _id: 3, </div><div class="line">        ... </div><div class="line">    &#125;,</div><div class="line">    &#123; </div><div class="line">        title: 'this is article D', </div><div class="line">        author: &#123; </div><div class="line">            name: 'John',</div><div class="line">            age: 16,</div><div class="line">            sex: male,</div><div class="line">            city: guangzhou,</div><div class="line">            _id: 1, </div><div class="line">            ...</div><div class="line">        &#125;,</div><div class="line">        _id: 4, </div><div class="line">        ... </div><div class="line">    &#125;,</div><div class="line">    &#123; </div><div class="line">        title: 'this is article E', </div><div class="line">        author: &#123; </div><div class="line">            name: 'John',</div><div class="line">            age: 16,</div><div class="line">            sex: male,</div><div class="line">            city: guangzhou,</div><div class="line">            _id: 1,</div><div class="line">            ...</div><div class="line">        &#125;,</div><div class="line">        _id: 5, </div><div class="line">        ... </div><div class="line">    &#125;,</div><div class="line">    ...</div><div class="line">]</div></pre></td></tr></table></figure></p>
+<h1 id="综合示例"><a href="#综合示例" class="headerlink" title="综合示例"></a>综合示例</h1><h5 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h5><p>找出发表文章最多的5位作者，按发表文章排序，显示他的发表文章的总次数，和他自己的信息</p>
+<ul>
+<li>文章按照作者分组,统计次数</li>
+<li>按照次数从高到低排序</li>
+<li>截取头5名</li>
+<li>关联用户信息</li>
+<li>不输出文章_id</li>
+</ul>
+<h5 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h5><figure class="highlight xquery"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">db.articles.aggregate([</div><div class="line">  &#123;</div><div class="line">    $group:</div><div class="line">      &#123;</div><div class="line">        _id: <span class="string">"$author"</span>,</div><div class="line">        count: &#123; $sum: <span class="number">1</span> &#125;,</div><div class="line">      &#125;</div><div class="line">  &#125;, </div><div class="line">  &#123;</div><div class="line">        $sort: &#123; count: -<span class="number">1</span> &#125;</div><div class="line">  &#125;,</div><div class="line">  &#123;</div><div class="line">    $skip: <span class="number">5</span></div><div class="line">  &#125;,</div><div class="line">  &#123;</div><div class="line">    $lookup:</div><div class="line">      &#123;</div><div class="line">        from: <span class="string">"users"</span>,</div><div class="line">        localField: <span class="string">"author"</span>,</div><div class="line">        foreignField: <span class="string">"name"</span>,</div><div class="line">        as: <span class="string">"author"</span></div><div class="line">      &#125;</div><div class="line">  &#125;,</div><div class="line">  &#123;</div><div class="line">    $project: &#123;</div><div class="line">        _id: <span class="number">0</span>,</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">])</div></pre></td></tr></table></figure>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>本文介绍了几个使用聚合管道查询时常用的管道操作符的用法，熟练地综合使用以上操作符可以对数据进行多样的处理，组合，统计，得出多样化的数据。另外再加以配合其他操作符组成的表达式, 能查询统计的内容会更加的多样化。</p>
+<blockquote>
+<p>感谢阅读~</p>
+</blockquote>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2017/08/11/mongoDB_Aggregation2/" class="archive-article-date">
+  	<time datetime="2017-08-11T10:00:19.000Z" itemprop="datePublished"><i class="icon-clock"></i>2017-08-11</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/aggregation/">aggregation</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mongoDB/">mongoDB</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mongoose/">mongoose</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/noSQL/">noSQL</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<i class="icon-price-tags"></i>
+	<a class="article-category-link" href="/categories/后端/">后端</a>
+	</div>
+
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+  
+<nav id="article-nav">
+  
+  
+    <a href="/2017/08/11/mongoDB_Aggregation1/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">mongoDB查询进阶--聚合管道(一)</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">Share to: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+	    <a class="jiathis_button_twitter"></a>
+	    <a class="jiathis_button_plus"></a> 
+	    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="//v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="mongoDB_Aggregation2" data-title="mongoDB查询进阶--聚合管道(二)" data-url="http://jaceechan.github.io/2017/08/11/mongoDB_Aggregation2/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"jckuroko"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2017 Jacee Chan
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    <script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false,
+		root: "/",
+		innerArchive: true
+	}
+</script>
+
+<script src="/./main.js"></script>
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+    
+<div class="tools-col">
+  <ul class="btn-wrap">
+    
+      <li class="chose" data-hook="tools-section-all"><span class="text">全部</span><i class="icon-book"></i></li>
+    
+    
+      <li data-hook="tools-section-tag"><span class="text">标签</span><i class="icon-price-tags"></i></li>
+    
+    
+    
+      <li data-hook="tools-section-me"><span class="text">我</span><i class="icon-smile"></i></li>
+    
+  </ul>
+  <div class="tools-wrap">
+    
+    	<section class="tools-section tools-section-all chose">
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-tag">
+    			<div class="widget tagcloud" id="js-tagcloud">
+    				<a href="/tags/aggregation/" style="font-size: 20px;">aggregation</a> <a href="/tags/babel/" style="font-size: 10px;">babel</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/max/" style="font-size: 10px;">max</a> <a href="/tags/mongoDB/" style="font-size: 20px;">mongoDB</a> <a href="/tags/mongoose/" style="font-size: 20px;">mongoose</a> <a href="/tags/noSQL/" style="font-size: 20px;">noSQL</a> <a href="/tags/react/" style="font-size: 10px;">react</a> <a href="/tags/ssh/" style="font-size: 10px;">ssh</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a> <a href="/tags/wechat/" style="font-size: 10px;">wechat</a> <a href="/tags/微信/" style="font-size: 10px;">微信</a> <a href="/tags/微信公众号/" style="font-size: 10px;">微信公众号</a> <a href="/tags/项目构建/" style="font-size: 10px;">项目构建</a>
+    			</div>
+    	</section>
+    
+
+    
+
+    
+    	<section class="tools-section tools-section-me">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">A JavaScript Developer</div>
+  	  	
+    	</section>
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  </div>
+</body>
+</html>
