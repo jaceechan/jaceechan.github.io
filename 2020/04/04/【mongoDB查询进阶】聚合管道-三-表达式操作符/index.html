@@ -1,0 +1,515 @@
+<!DOCTYPE html><head><meta name="generator" content="Hexo 3.9.0"><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="【mongoDB查询进阶】聚合管道(三) -- 表达式操作符"><meta name="author" content="Jacee Chan"><meta name="keywords" content><meta name="copyright" content="copyright.liscense_type"><title>【mongoDB查询进阶】聚合管道(三) -- 表达式操作符</title><!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]><script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script><script src="https://cdn.bootcss.com/respond/1.4.2/respond.min.js"></script><![endif]--><link rel="icon" href="/compass/imgs/favicon.ico"><link rel="stylesheet" href="/compass/stylesheets/font-awesome.min.css"><script>var algoliaConfig = {"on":false}</script><link rel="stylesheet" href="/compass/stylesheets/screen.css"></head><body><div id="body-inner-wrapper"><header id="page-header"><nav id="nav"><div id="site-name">JCBlog</div><i class="fa fa-bars fa-2x" id="nav-icon" aria-hidden="true"></i><div id="nav-expanded"><a class="nav-word-item" href="/">Home</a><a class="nav-word-item" href="/archives">Archives</a><a class="nav-word-item" href="/tags">Tags</a><a class="nav-word-item" href="/categories">Catogories</a></div><div id="nav-list"><ul><li><a class="nav-list-item" href="/">Home</a></li><li><a class="nav-list-item" href="/archives">Archives</a></li><li><a class="nav-list-item" href="/tags">Tags</a></li><li><a class="nav-list-item" href="/categories">Catogories</a></li></ul></div></nav><div id="banner-wrapper"><div id="banner-pagetype-dependent-info"><h1 id="post-title">【mongoDB查询进阶】聚合管道(三) -- 表达式操作符</h1><span id="post-description"><i class="fa fa-calendar" aria-hidden="true"></i> 2020-04-04</span><span id="word-count">The total word count - 2698</span><span id="time-count">Estimated time of reading - 9 mins</span></div></div><a title="Back to Top"><i class="fa fa-arrow-up" id="to-Top" aria-hidden="true"></i></a><a title="Click to Toggle off"><i class="fa fa-toggle-on" id="toggle-on-Toc" aria-hidden="true"></i></a><a title="Click to Toggle on"><i class="fa fa-toggle-off" id="toggle-off-Toc" aria-hidden="true"></i></a></header><aside id="toc-column"><div id="toc-column-inner-wrapper"><div id="post-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#回顾"><span class="toc-text">回顾</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#相关文章回顾"><span class="toc-text">相关文章回顾</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#管道操作符的分类"><span class="toc-text">管道操作符的分类</span></a></li></ol></li></ol><li class="toc-item toc-level-1"><a class="toc-link" href="#表达式操作符（Expression-Operators）"><span class="toc-text">表达式操作符（Expression Operators）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#表达式操作符分类"><span class="toc-text">表达式操作符分类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常用表达式操作符"><span class="toc-text">常用表达式操作符</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#布尔值操作符（Boolean-Operators）"><span class="toc-text">布尔值操作符（Boolean Operators）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#比较操作符（Comparison-Operators）"><span class="toc-text">比较操作符（Comparison Operators）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数学操作符（Arithmetic-Operators）"><span class="toc-text">数学操作符（Arithmetic Operators）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#字符串操作符（String-Operators）"><span class="toc-text">字符串操作符（String Operators）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#日期操作符（Date-Operators）"><span class="toc-text">日期操作符（Date Operators）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#条件操作符（Conditional-Operators）"><span class="toc-text">条件操作符（Conditional Operators）</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li></div></div></aside><main id="main-content-column"><div id="main-content-wrapper"><div id="post-full-content"><h1 id="回顾"><a href="#回顾" class="headerlink" title="回顾"></a>回顾</h1><h4 id="相关文章回顾"><a href="#相关文章回顾" class="headerlink" title="相关文章回顾"></a>相关文章回顾</h4><p><a href="http://www.jianshu.com/p/7cf8a0a5c149" target="_blank" rel="noopener">mongoDB查询进阶–聚合管道(一)回顾</a><br><a href="http://www.jianshu.com/p/5f64b0084570" target="_blank" rel="noopener">mongoDB查询进阶–聚合管道(二)回顾</a></p>
+<h4 id="管道操作符的分类"><a href="#管道操作符的分类" class="headerlink" title="管道操作符的分类"></a>管道操作符的分类</h4><p>管道操作符可以分为三类： </p>
+<ol>
+<li>阶段操作符（Stage Operators）</li>
+<li>表达式操作符（Expression Operators）–主要用于$project</li>
+<li>累加器（Accumulators）–主要用于$group分组</li>
+</ol>
+<p><a href="https://docs.mongodb.com/manual/reference/operator/aggregation" target="_blank" rel="noopener">参考MongoDB官网:https://docs.mongodb.com/manual/reference/operator/aggregation</a></p>
+<blockquote>
+<p>本篇主要内容是管道操作符中的表达式操作符。</p>
+</blockquote>
+<h1 id="表达式操作符（Expression-Operators）"><a href="#表达式操作符（Expression-Operators）" class="headerlink" title="表达式操作符（Expression Operators）"></a>表达式操作符（Expression Operators）</h1><p>表达式操作符主要用于在管道中构建表达式时使用，使用类似于函数那样需要参数，主要用于$project操作符中，用于构建表达式，使用方法一般如下：</p>
+<p>方法1：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="tag">&lt;<span class="name">operator</span>&gt;</span>: [ <span class="tag">&lt;<span class="name">argument1</span>&gt;</span>, <span class="tag">&lt;<span class="name">argument2</span>&gt;</span> ... ] &#125;</span><br></pre></td></tr></table></figure>
+<p>方法2：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="tag">&lt;<span class="name">operator</span>&gt;</span>: <span class="tag">&lt;<span class="name">argument</span>&gt;</span> &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="表达式操作符分类"><a href="#表达式操作符分类" class="headerlink" title="表达式操作符分类"></a>表达式操作符分类</h2><ul>
+<li>布尔值操作符（Boolean Operators）</li>
+<li>集合操作符（Set Operators）</li>
+<li>比较操作符（Comparison Operators）</li>
+<li>数学操作符（Arithmetic Operators）</li>
+<li>字符串操作符（String Operators）</li>
+<li>文本搜索操作符（Text Search Operators）</li>
+<li>数组操作符（Array Operators）</li>
+<li>变量操作符（Variable Operators）</li>
+<li>字面量操作符（Literal Operators）</li>
+<li>日期操作符（Date Operators）</li>
+<li>条件操作符（Conditional Operators）</li>
+<li>数据类型操作符（Data Type Operators）</li>
+</ul>
+<h2 id="常用表达式操作符"><a href="#常用表达式操作符" class="headerlink" title="常用表达式操作符"></a>常用表达式操作符</h2><ul>
+<li><h3 id="布尔值操作符（Boolean-Operators）"><a href="#布尔值操作符（Boolean-Operators）" class="headerlink" title="布尔值操作符（Boolean Operators）"></a>布尔值操作符（Boolean Operators）</h3></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">操作符</th>
+<th style="text-align:left">简述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">$and</td>
+<td style="text-align:left">逻辑与操作符，当他的表达式中所有值都是true的时候，才返回true。 用法：<code>{ $and: [ &lt;expression1&gt;, &lt;expression2&gt;, ... ] }</code>。</td>
+</tr>
+<tr>
+<td style="text-align:left">$or</td>
+<td style="text-align:left">逻辑或操作符，当他的表达式中有值是true的时候，就会返回true。用法：<code>{ $or: [ &lt;expression1&gt;, &lt;expression2&gt;, ... ] }</code></td>
+</tr>
+<tr>
+<td style="text-align:left">$not</td>
+<td style="text-align:left">取反操作符，返回表达式中取反后的布尔值。用法：<code>{ $not: [ &lt;expression&gt; ] }</code></td>
+</tr>
+</tbody>
+</table>
+<p>#####示例</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">例子</th>
+<th style="text-align:left">结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>{ $and: [ 1, &quot;green&quot; ] }</code></td>
+<td style="text-align:left">true</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{ $and: [ ] }</code></td>
+<td style="text-align:left">true</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{ $and: [ [ null ], [ false ], [ 0 ] ] }</code></td>
+<td style="text-align:left">true</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{ $and: [ null, true ] }</code></td>
+<td style="text-align:left">false</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{ $and: [ 0, true ] }</code></td>
+<td style="text-align:left">false</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{ $or: [ true, false ] }</code></td>
+<td style="text-align:left">true</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{ $or: [ [ false ], false ] }</code></td>
+<td style="text-align:left">true</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{ $or: [ null, 0, undefined ] }</code></td>
+<td style="text-align:left">false</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{ $or: [ ] }</code></td>
+<td style="text-align:left">false</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{ $not: [ true ] }</code></td>
+<td style="text-align:left">false</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{ $not: [ [ false ] ] }</code></td>
+<td style="text-align:left">false</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{ $not: [ false ] }</code></td>
+<td style="text-align:left">true</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{ $not: [ null ] }</code></td>
+<td style="text-align:left">true</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{ $not: [ 0 ] }</code></td>
+<td style="text-align:left">true</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><h3 id="比较操作符（Comparison-Operators）"><a href="#比较操作符（Comparison-Operators）" class="headerlink" title="比较操作符（Comparison Operators）"></a>比较操作符（Comparison Operators）</h3></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">操作符</th>
+<th style="text-align:left">简述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">$cmp</td>
+<td style="text-align:left">比较操作符，比较表达式中两个值的大小，如果第一个值小于第二个值则返回-1，相等返回0，大于返回1。用法<code>{ $cmp: [ &lt;expression1&gt;, &lt;expression2&gt; ] }</code></td>
+</tr>
+<tr>
+<td style="text-align:left">$eq</td>
+<td style="text-align:left">比较表达式中两个是否相等，是则返回true，否则返回false。用法<code>{ $eq: [ &lt;expression1&gt;, &lt;expression2&gt; ] }</code></td>
+</tr>
+<tr>
+<td style="text-align:left">$gt</td>
+<td style="text-align:left">比较表达式中第一个值是否大于第二个值，是则返回true，否则返回false。用法<code>{ $gt: [ &lt;expression1&gt;, &lt;expression2&gt; ] }</code></td>
+</tr>
+<tr>
+<td style="text-align:left">$gte</td>
+<td style="text-align:left">比较表达式中第一个值是否大于等于第二个值，是则返回true，否则返回false。用法<code>{ $gte: [ &lt;expression1&gt;, &lt;expression2&gt; ] }</code></td>
+</tr>
+<tr>
+<td style="text-align:left">$lt</td>
+<td style="text-align:left">比较表达式中第一个值是否小于第二个值，是则返回true，否则返回false。用法<code>{ $lt: [ &lt;expression1&gt;, &lt;expression2&gt; ] }</code></td>
+</tr>
+<tr>
+<td style="text-align:left">$lte</td>
+<td style="text-align:left">比较表达式中第一个值是否小于等于第二个值，是则返回true，否则返回false。用法<code>{ $lte: [ &lt;expression1&gt;, &lt;expression2&gt; ] }</code></td>
+</tr>
+<tr>
+<td style="text-align:left">$ne</td>
+<td style="text-align:left">比较表达式中两个是否相等，不过返回值与$eq相反，是则返回false，否则返回true。用法<code>{ $ne: [ &lt;expression1&gt;, &lt;expression2&gt; ] }</code></td>
+</tr>
+</tbody>
+</table>
+<p>#####示例</p>
+<p>假设有一个关于考试成绩的集合：<br><figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="string">"_id"</span> : <span class="number">1</span>, <span class="string">"name"</span> : <span class="string">"abc1"</span>,  score: <span class="number">80</span> &#125;</span><br><span class="line">&#123; <span class="string">"_id"</span> : <span class="number">2</span>, <span class="string">"name"</span> : <span class="string">"avc1"</span>,  score: <span class="number">82</span> &#125;</span><br><span class="line">&#123; <span class="string">"_id"</span> : <span class="number">3</span>, <span class="string">"name"</span> : <span class="string">"adc1"</span>,  score: <span class="number">79</span> &#125;</span><br><span class="line">&#123; <span class="string">"_id"</span> : <span class="number">4</span>, <span class="string">"name"</span> : <span class="string">"awc1"</span>,  score: <span class="number">60</span> &#125;</span><br><span class="line">&#123; <span class="string">"_id"</span> : <span class="number">5</span>, <span class="string">"name"</span> : <span class="string">"xyz1"</span>,  score: <span class="number">50</span> &#125;</span><br><span class="line">&#123; <span class="string">"_id"</span> : <span class="number">6</span>, <span class="string">"name"</span> : <span class="string">"VWZ1"</span>,  score: <span class="number">100</span> &#125;</span><br></pre></td></tr></table></figure></p>
+<p>操作如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">db.collection.aggregate(</span><br><span class="line">   [</span><br><span class="line">     &#123;</span><br><span class="line">       <span class="variable">$project</span>:</span><br><span class="line">          &#123;</span><br><span class="line">            name: 1,</span><br><span class="line">            score: 1,</span><br><span class="line">            cmp60: &#123; <span class="variable">$cmp</span>: [ <span class="string">"<span class="variable">$score</span>"</span>, 60 ] &#125;,</span><br><span class="line">            eq100: &#123; <span class="variable">$eq</span>: [ <span class="string">"<span class="variable">$score</span>"</span>, 100 ] &#125;,</span><br><span class="line">            gt80: &#123; <span class="variable">$gt</span>: [ <span class="string">"<span class="variable">$score</span>"</span>, 80 ] &#125;,</span><br><span class="line">            gte80: &#123; <span class="variable">$gte</span>: [ <span class="string">"<span class="variable">$score</span>"</span>, 80 ] &#125;,</span><br><span class="line">            lt80: &#123; <span class="variable">$lt</span>: [ <span class="string">"<span class="variable">$score</span>"</span>, 80 ] &#125;,</span><br><span class="line">            lte80: &#123; <span class="variable">$lte</span>: [ <span class="string">"<span class="variable">$score</span>"</span>, 80 ] &#125;,</span><br><span class="line">            ne100: &#123; <span class="variable">$ne</span>: [ <span class="string">"<span class="variable">$score</span>"</span>, 100 ] &#125;,</span><br><span class="line">            _id: 0</span><br><span class="line">          &#125;</span><br><span class="line">     &#125;</span><br><span class="line">   ]</span><br><span class="line">)</span><br></pre></td></tr></table></figure></p>
+<p>返回结果：<br><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#123;</span> <span class="string">"name"</span> <span class="string">:</span> <span class="string">"abc1"</span><span class="string">,</span> <span class="attr">score:</span> <span class="number">80</span><span class="string">,</span> <span class="attr">cmp60:</span> <span class="number">1</span><span class="string">,</span> <span class="attr">eq100:</span> <span class="literal">false</span><span class="string">,</span> <span class="attr">gt80:</span> <span class="literal">false</span><span class="string">,</span> <span class="attr">gte80:</span> <span class="literal">true</span><span class="string">,</span> <span class="attr">lt80:</span> <span class="literal">false</span><span class="string">,</span> <span class="attr">lte80:</span> <span class="literal">true</span><span class="string">,</span> <span class="attr">ne100:</span> <span class="literal">true</span> <span class="string">&#125;</span></span><br><span class="line"><span class="string">&#123;</span> <span class="string">"name"</span> <span class="string">:</span> <span class="string">"avc1"</span><span class="string">,</span> <span class="attr">score:</span> <span class="number">82</span><span class="string">,</span> <span class="attr">cmp60:</span> <span class="number">1</span><span class="string">,</span> <span class="attr">eq100:</span> <span class="literal">false</span><span class="string">,</span> <span class="attr">gt80:</span> <span class="literal">true</span><span class="string">,</span> <span class="attr">gte80:</span> <span class="literal">true</span><span class="string">,</span> <span class="attr">lt80:</span> <span class="literal">false</span><span class="string">,</span> <span class="attr">lte80:</span> <span class="literal">false</span><span class="string">,</span> <span class="attr">ne100:</span> <span class="literal">true</span> <span class="string">&#125;</span></span><br><span class="line"><span class="string">&#123;</span> <span class="string">"name"</span> <span class="string">:</span> <span class="string">"adc1"</span><span class="string">,</span> <span class="attr">score:</span> <span class="number">79</span><span class="string">,</span> <span class="attr">cmp60:</span> <span class="number">1</span><span class="string">,</span> <span class="attr">eq100:</span> <span class="literal">false</span><span class="string">,</span> <span class="attr">gt80:</span> <span class="literal">false</span><span class="string">,</span> <span class="attr">gte80:</span> <span class="literal">false</span><span class="string">,</span> <span class="attr">lt80:</span> <span class="literal">true</span><span class="string">,</span> <span class="attr">lte80:</span> <span class="literal">false</span><span class="string">,</span> <span class="attr">ne100:</span> <span class="literal">true</span> <span class="string">&#125;</span></span><br><span class="line"><span class="string">&#123;</span> <span class="string">"name"</span> <span class="string">:</span> <span class="string">"awc1"</span><span class="string">,</span> <span class="attr">score:</span> <span class="number">60</span><span class="string">,</span> <span class="attr">cmp60:</span> <span class="number">0</span><span class="string">,</span> <span class="attr">eq100:</span> <span class="literal">false</span><span class="string">,</span> <span class="attr">gt80:</span> <span class="literal">false</span><span class="string">,</span> <span class="attr">gte80:</span> <span class="literal">false</span><span class="string">,</span> <span class="attr">lt80:</span> <span class="literal">true</span><span class="string">,</span> <span class="attr">lte80:</span> <span class="literal">true</span><span class="string">,</span> <span class="attr">ne100:</span> <span class="literal">true</span> <span class="string">&#125;</span></span><br><span class="line"><span class="string">&#123;</span> <span class="string">"name"</span> <span class="string">:</span> <span class="string">"xyz1"</span><span class="string">,</span> <span class="attr">score:</span> <span class="number">50</span><span class="string">,</span> <span class="attr">cmp60:</span> <span class="number">-1</span><span class="string">,</span> <span class="attr">eq100:</span> <span class="literal">false</span><span class="string">,</span> <span class="attr">gt80:</span> <span class="literal">false</span><span class="string">,</span> <span class="attr">gte80:</span> <span class="literal">false</span><span class="string">,</span> <span class="attr">lt80:</span> <span class="literal">true</span><span class="string">,</span> <span class="attr">lte80:</span> <span class="literal">true</span><span class="string">,</span> <span class="attr">ne100:</span> <span class="literal">true</span> <span class="string">&#125;</span></span><br><span class="line"><span class="string">&#123;</span> <span class="string">"name"</span> <span class="string">:</span> <span class="string">"VWZ1"</span><span class="string">,</span> <span class="attr">score:</span> <span class="number">100</span><span class="string">,</span> <span class="attr">cmp60:</span> <span class="number">1</span><span class="string">,</span> <span class="attr">eq100:</span> <span class="literal">true</span><span class="string">,</span> <span class="attr">gt80:</span> <span class="literal">true</span><span class="string">,</span> <span class="attr">gte80:</span> <span class="literal">true</span><span class="string">,</span> <span class="attr">lt80:</span> <span class="literal">false</span><span class="string">,</span> <span class="attr">lte80:</span> <span class="literal">false</span><span class="string">,</span> <span class="attr">ne100:</span> <span class="literal">false</span> <span class="string">&#125;</span></span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><h3 id="数学操作符（Arithmetic-Operators）"><a href="#数学操作符（Arithmetic-Operators）" class="headerlink" title="数学操作符（Arithmetic Operators）"></a>数学操作符（Arithmetic Operators）</h3></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">操作符</th>
+<th style="text-align:left">简述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">$abs</td>
+<td style="text-align:left">求绝对值操作符，于v3.2版新加入。用法：<code>{ $abs: &lt;number&gt; }</code></td>
+</tr>
+<tr>
+<td style="text-align:left">$add</td>
+<td style="text-align:left">求和操作符，返回所有表达式相加起来的结果。用法：<code>{ $add: [ &lt;expression1&gt;, &lt;expression2&gt;, ... ] }</code></td>
+</tr>
+<tr>
+<td style="text-align:left">$ceil</td>
+<td style="text-align:left">进一法取整操作符，取 于v3.2版新加入。用法：<code>{ $ceil: &lt;number&gt; }</code></td>
+</tr>
+<tr>
+<td style="text-align:left">$divide</td>
+<td style="text-align:left">求商操作符，返回表达式1除以表达式2的商。用法：<code>{ $divide: [ &lt;expression1&gt;, &lt;expression2&gt; ] }</code></td>
+</tr>
+<tr>
+<td style="text-align:left">$subtract</td>
+<td style="text-align:left">求差操作符，返回表达式1减去表达式2的结果。用法：<code>{ $subtract: [ &lt;expression1&gt;, &lt;expression2&gt; ] }</code></td>
+</tr>
+<tr>
+<td style="text-align:left">$multiply</td>
+<td style="text-align:left">求积操作符，返回所有表达式相乘的结果。用法：<code>{ $multiply: [ &lt;expression1&gt;, &lt;expression2&gt;, ... ] }</code></td>
+</tr>
+<tr>
+<td style="text-align:left">$mod</td>
+<td style="text-align:left">求余操作符，返回所有表达式1除以表达式2所得到的余数。用法：<code>{ $multiply: [ &lt;expression1&gt;, &lt;expression2&gt;] }</code></td>
+</tr>
+</tbody>
+</table>
+<p>#####示例</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">例子</th>
+<th style="text-align:left">结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>{ $abs: -1 }</code></td>
+<td style="text-align:left">1</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{ $abs: 1 }</code></td>
+<td style="text-align:left">1</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{ $abs: null }</code></td>
+<td style="text-align:left">null</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{ $add: [1, 1] }</code></td>
+<td style="text-align:left">2</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{ $ceil: 1 }</code></td>
+<td style="text-align:left">1</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{ $ceil: 7.80 }</code></td>
+<td style="text-align:left">8</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{ $ceil: -2.8 }</code></td>
+<td style="text-align:left">-2</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{ $divide: [40, 8] }</code></td>
+<td style="text-align:left">5</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{ $subtract: [10, 8] }</code></td>
+<td style="text-align:left">2</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{ $multiply: [5, 8] }</code></td>
+<td style="text-align:left">40</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{ $mob: [80, 7] }</code></td>
+<td style="text-align:left">3</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{ $mob: [80, 8] }</code></td>
+<td style="text-align:left">0</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Tips: <code>$add</code>将一个日期类型和数字类型相加会变成日期类型。 这样的话，当数据库存储的是时间戳但是需要又想对其使用日期操作符的话，就可以通过这样的方法，先让其变成日期类型，然后再使用日期操作符，用法参考：<code>{ $add: [ new Date(0), &#39;$ts&#39; ] }</code>。</p>
+</blockquote>
+<ul>
+<li><h3 id="字符串操作符（String-Operators）"><a href="#字符串操作符（String-Operators）" class="headerlink" title="字符串操作符（String Operators）"></a>字符串操作符（String Operators）</h3></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">操作符</th>
+<th style="text-align:left">简述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">$concat</td>
+<td style="text-align:left">连接操作符，将给定表达式中的字符串连接一起。用法：<code>{ $concat: [ &lt;expression1&gt;, &lt;expression2&gt;, ... ] }</code></td>
+</tr>
+<tr>
+<td style="text-align:left">$split</td>
+<td style="text-align:left">切割操作符，用于对字符串进行分切。用法：<code>{ $split: [ &lt;string expression&gt;, &lt;delimiter&gt; ] }</code></td>
+</tr>
+<tr>
+<td style="text-align:left">$toLower</td>
+<td style="text-align:left">用于返回字符串的小写形式。用法：<code>{ $toLower: &lt;expression&gt; }</code></td>
+</tr>
+<tr>
+<td style="text-align:left">$toUpper</td>
+<td style="text-align:left">用于返回字符串的大写形式。用法：<code>{ $toUpper: &lt;expression&gt; }</code></td>
+</tr>
+<tr>
+<td style="text-align:left">$substr</td>
+<td style="text-align:left">用于返回子字符串，v3.4+版本不建议使用，应该使用substrBytes或substrCP，v3.4+版本使用的话，相当于substrBytes。用法：<code>{ $substr: [ &lt;string&gt;, &lt;start&gt;, &lt;length&gt; ] }</code></td>
+</tr>
+<tr>
+<td style="text-align:left">$substrBytes</td>
+<td style="text-align:left">用于根据UTF-8下的字节位置返回子字符串（起始位置为0），于v3.4新增。用法：<code>{ $substrBytes: [ &lt;string expression&gt;, &lt;byte index&gt;, &lt;byte count&gt; ] }</code></td>
+</tr>
+<tr>
+<td style="text-align:left">$substrCP</td>
+<td style="text-align:left">用于根据UTF-8下的Code Point位置返回子字符串（起始位置为0），于v3.4新增。用法：<code>{ $substrCP: [ &lt;string expression&gt;, &lt;code point index&gt;, &lt;code point count&gt; ] }</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><a href="http://www.unicode.org/glossary/#code_point" target="_blank" rel="noopener">Code Point</a>: (1) Any value in the Unicode codespace; that is, the range of integers from 0 to 10FFFF16. Not all code points are assigned to encoded characters. See code point type. (2) A value, or position, for a character, in any coded character set.</p>
+</blockquote>
+<p>#####示例</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">例子</th>
+<th style="text-align:left">结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>{ $concat: [ &quot;item&quot;, &quot; - &quot;, &quot;a&quot; ] }</code></td>
+<td style="text-align:left">item - a</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{ $split: [ &quot;June-15-2013&quot;, &quot;-&quot; ] }</code></td>
+<td style="text-align:left"><code>[ &quot;June&quot;, &quot;15&quot;, &quot;2013&quot; ]</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{ $split: [ &quot;banana split&quot;, &quot;a&quot; ] }</code></td>
+<td style="text-align:left"><code>[ &quot;b&quot;, &quot;n&quot;, &quot;n&quot;, &quot; split&quot; ]</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{ $split: [ &quot;headphone jack&quot;, 7 ] }</code></td>
+<td style="text-align:left">$split第二个参数必须是一个字符串，不能是数字</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{ $toLower: &quot;ITEM&quot; }</code></td>
+<td style="text-align:left">“item”</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{ $toLower: &quot;Item&quot; }</code></td>
+<td style="text-align:left">“item”</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{ $toLower: null }</code></td>
+<td style="text-align:left">\”\”</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{ $toUpper: &quot;item&quot; }</code></td>
+<td style="text-align:left">“ITEM”</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{ $toUpper: &quot;Item&quot; }</code></td>
+<td style="text-align:left">“ITEM”</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{ $toUpper: null }</code></td>
+<td style="text-align:left">\”\”</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{ $substrBytes: [ &quot;abcde&quot;, 1, 2 ] }</code></td>
+<td style="text-align:left">“bc”</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{ $substrBytes: [ &quot;Hello World!&quot;, 6, 5 ] }</code></td>
+<td style="text-align:left">“World”</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{ $substrBytes: [ &quot;cafétéria&quot;, 0, 5 ] }</code></td>
+<td style="text-align:left">“café”</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{ $substrBytes: [ &quot;cafétéria&quot;, 5, 4 ] }</code></td>
+<td style="text-align:left">“tér”</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{ $substrBytes: [ &quot;cafétéria&quot;, 7, 3 ] }</code></td>
+<td style="text-align:left">“Error: Invalid range, starting index is a UTF-8 continuation byte.”</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{ $substrBytes: [ &quot;cafétéria&quot;, 3, 1 ] }</code></td>
+<td style="text-align:left">“Error: Invalid range, ending index is in the middle of a UTF-8 character.”</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{ $substrBytes: [ &quot;寿司sushi&quot;, 0, 3 ] }</code></td>
+<td style="text-align:left">“寿”</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{ $substrCP: [ &quot;abcde&quot;, 1, 2 ] }</code></td>
+<td style="text-align:left">“bc”</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{ $substrCP: [ &quot;Hello World!&quot;, 6, 5 ] }</code></td>
+<td style="text-align:left">“World”</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{ $substrCP: [ &quot;cafétéria&quot;, 0, 5 ] }</code></td>
+<td style="text-align:left">“cafét”</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{ $substrCP: [ &quot;cafétéria&quot;, 5, 4 ] }</code></td>
+<td style="text-align:left">“tér”</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{ $substrCP: [ &quot;cafétéria&quot;, 7, 3 ] }</code></td>
+<td style="text-align:left">“ia”</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{ $substrCP: [ &quot;cafétéria&quot;, 3, 1 ] }</code></td>
+<td style="text-align:left">“é”</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>{ $substrCP: [ &quot;寿司sushi&quot;, 0, 3 ] }</code></td>
+<td style="text-align:left">“寿司s”</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><h3 id="日期操作符（Date-Operators）"><a href="#日期操作符（Date-Operators）" class="headerlink" title="日期操作符（Date Operators）"></a>日期操作符（Date Operators）</h3></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">操作符</th>
+<th style="text-align:left">简述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">$dayOfYear</td>
+<td style="text-align:left">返回一年中的一天，值在1和366（闰年）之间。用法：<code>{ $dayOfYear: &lt;expression&gt; }</code></td>
+</tr>
+<tr>
+<td style="text-align:left">$dayOfMonth</td>
+<td style="text-align:left">返回一个月中的一天，值在1和31之间。用法：<code>{ $dayOfMonth: &lt;expression&gt; }</code></td>
+</tr>
+<tr>
+<td style="text-align:left">$dayOfWeek</td>
+<td style="text-align:left">返回一周中的一天，值在1（周日）和7（周六）之间。用法：<code>{ $dayOfWeek: &lt;expression&gt; }</code></td>
+</tr>
+<tr>
+<td style="text-align:left">$year</td>
+<td style="text-align:left">返回年份，eg:2017。用法：<code>{ $year: &lt;expression&gt; }</code></td>
+</tr>
+<tr>
+<td style="text-align:left">$month</td>
+<td style="text-align:left">返回月份，值在1和12之间。用法：<code>{ $month: &lt;expression&gt; }</code></td>
+</tr>
+<tr>
+<td style="text-align:left">$week</td>
+<td style="text-align:left">返回周 ，值在0和53之间。用法：<code>{ $week: &lt;expression&gt; }</code></td>
+</tr>
+<tr>
+<td style="text-align:left">$hour</td>
+<td style="text-align:left">返回时 ，值在0和23之间。用法：<code>{ $hour: &lt;expression&gt; }</code></td>
+</tr>
+<tr>
+<td style="text-align:left">$minute</td>
+<td style="text-align:left">返回分 ，值在0和59之间。用法：<code>{ $minute: &lt;expression&gt; }</code></td>
+</tr>
+<tr>
+<td style="text-align:left">$second</td>
+<td style="text-align:left">返回秒，值在0和60之间（闰秒）。用法：<code>{ $second: &lt;expression&gt; }</code></td>
+</tr>
+<tr>
+<td style="text-align:left">$millisecond</td>
+<td style="text-align:left">返回毫秒，值在0和999之间。用法：<code>{ $millisecond: &lt;expression&gt; }</code></td>
+</tr>
+<tr>
+<td style="text-align:left">$dateToString</td>
+<td style="text-align:left">返回日期的字符串。用法：<code>{ $dateToString: { format: &lt;formatString&gt;, date: &lt;dateExpression&gt; } }</code></td>
+</tr>
+</tbody>
+</table>
+<p>#####示例</p>
+<p>假如有以下数据：<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="attr">"_id"</span> : <span class="number">1</span>, <span class="attr">"item"</span> : <span class="string">"abc"</span>, <span class="attr">"price"</span> : <span class="number">10</span>, <span class="attr">"quantity"</span> : <span class="number">2</span>, <span class="attr">"date"</span> : ISODate(<span class="string">"2014-01-01T08:15:39.736Z"</span>) &#125;</span><br></pre></td></tr></table></figure></p>
+<p>进行如下操作：<br><figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">db.collection.aggregate(</span><br><span class="line">   [</span><br><span class="line">     &#123;</span><br><span class="line">       $project:</span><br><span class="line">         &#123;</span><br><span class="line">           year: &#123; $year: <span class="string">"$date"</span> &#125;,</span><br><span class="line">           month: &#123; $month: <span class="string">"$date"</span> &#125;,</span><br><span class="line">           day: &#123; $dayOfMonth: <span class="string">"$date"</span> &#125;,</span><br><span class="line">           hour: &#123; $hour: <span class="string">"$date"</span> &#125;,</span><br><span class="line">           minutes: &#123; $minute: <span class="string">"$date"</span> &#125;,</span><br><span class="line">           seconds: &#123; $second: <span class="string">"$date"</span> &#125;,</span><br><span class="line">           milliseconds: &#123; $millisecond: <span class="string">"$date"</span> &#125;,</span><br><span class="line">           dayOfYear: &#123; $dayOfYear: <span class="string">"$date"</span> &#125;,</span><br><span class="line">           dayOfWeek: &#123; $dayOfWeek: <span class="string">"$date"</span> &#125;,</span><br><span class="line">           week: &#123; $week: <span class="string">"$date"</span> &#125;,</span><br><span class="line">           yearMonthDayUTC: &#123; $dateToString: &#123; <span class="keyword">format</span>: <span class="string">"%Y-%m-%d"</span>, date: <span class="string">"$date"</span> &#125; &#125;,</span><br><span class="line">          <span class="keyword">time</span>: &#123; $dateToString: &#123; <span class="keyword">format</span>: <span class="string">"%H:%M:%S:%L"</span>, date: <span class="string">"$date"</span> &#125; &#125;</span><br><span class="line">         &#125;</span><br><span class="line">     &#125;</span><br><span class="line">   ]</span><br><span class="line">)</span><br></pre></td></tr></table></figure></p>
+<p>返回结果:<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"_id"</span> : <span class="number">1</span>,</span><br><span class="line">  <span class="attr">"year"</span> : <span class="number">2014</span>,</span><br><span class="line">  <span class="attr">"month"</span> : <span class="number">1</span>,</span><br><span class="line">  <span class="attr">"day"</span> : <span class="number">1</span>,</span><br><span class="line">  <span class="attr">"hour"</span> : <span class="number">8</span>,</span><br><span class="line">  <span class="attr">"minutes"</span> : <span class="number">15</span>,</span><br><span class="line">  <span class="attr">"seconds"</span> : <span class="number">39</span>,</span><br><span class="line">  <span class="attr">"milliseconds"</span> : <span class="number">736</span>,</span><br><span class="line">  <span class="attr">"dayOfYear"</span> : <span class="number">1</span>,</span><br><span class="line">  <span class="attr">"dayOfWeek"</span> : <span class="number">4</span>,</span><br><span class="line">  <span class="attr">"week"</span> : <span class="number">0</span>,</span><br><span class="line">  <span class="attr">"yearMonthDayUTC"</span> : <span class="string">"2014-01-01"</span>, </span><br><span class="line">  <span class="attr">"time"</span> : <span class="string">"08:15:39:736"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><h3 id="条件操作符（Conditional-Operators）"><a href="#条件操作符（Conditional-Operators）" class="headerlink" title="条件操作符（Conditional Operators）"></a>条件操作符（Conditional Operators）</h3></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">操作符</th>
+<th style="text-align:left">简述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">$cond</td>
+<td style="text-align:left">用法：<code>{ $cond: [ &lt;boolean-expression&gt;, &lt;true-case&gt;, &lt;false-case&gt; ] }</code> 或者 v2.6+还支持<code>{ $cond: { if: &lt;boolean-expression&gt;, then: &lt;true-case&gt;, else: &lt;false-case-&gt; } }</code></td>
+</tr>
+<tr>
+<td style="text-align:left">$ifNull</td>
+<td style="text-align:left">用法：<code>{ $ifNull: [ &lt;expression&gt;, &lt;replacement-expression-if-null&gt; ] }</code></td>
+</tr>
+</tbody>
+</table>
+<p>#####示例</p>
+<p>假设有一个关于考试成绩的集合：<br><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="string">"_id"</span> : <span class="number">1</span>, <span class="string">"name"</span> : <span class="string">"a"</span>,  <span class="string">score:</span> <span class="number">80</span> &#125;</span><br><span class="line">&#123; <span class="string">"_id"</span> : <span class="number">2</span>, <span class="string">"name"</span> : <span class="string">"b"</span>,  <span class="string">score:</span> <span class="number">69</span> &#125;</span><br><span class="line">&#123; <span class="string">"_id"</span> : <span class="number">3</span>, <span class="string">"name"</span> : <span class="string">"c"</span>,  <span class="string">score:</span> <span class="number">53</span> &#125;</span><br><span class="line">&#123; <span class="string">"_id"</span> : <span class="number">3</span>, <span class="string">"name"</span> : <span class="literal">null</span>,  <span class="string">score:</span> <span class="number">70</span> &#125;</span><br></pre></td></tr></table></figure></p>
+<p>操作如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">db.collection.aggregate(</span><br><span class="line">   [</span><br><span class="line">      &#123;</span><br><span class="line">         <span class="variable">$project</span>:</span><br><span class="line">           &#123;</span><br><span class="line">              _id: 0,</span><br><span class="line">              score: 1,</span><br><span class="line">              pass:</span><br><span class="line">                &#123;</span><br><span class="line">                  <span class="variable">$cond</span>: [ &#123; <span class="variable">$gte</span>: [ <span class="string">"<span class="variable">$score</span>"</span>, 60 ] &#125;, 1, 0 ]</span><br><span class="line">                &#125;,</span><br><span class="line">              description: &#123; <span class="variable">$ifNull</span>: [ <span class="string">"<span class="variable">$name</span>"</span>, <span class="string">"Unspecified"</span> ] &#125; </span><br><span class="line">           &#125;</span><br><span class="line">      &#125;</span><br><span class="line">   ]</span><br><span class="line">)</span><br></pre></td></tr></table></figure></p>
+<p>返回结果：<br><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="string">"name"</span> : <span class="string">"a"</span>,  <span class="string">score:</span> <span class="number">80</span>, <span class="string">pass:</span> <span class="number">1</span> &#125;</span><br><span class="line">&#123; <span class="string">"name"</span> : <span class="string">"b"</span>,  <span class="string">score:</span> <span class="number">69</span>, <span class="string">pass:</span> <span class="number">1</span> &#125;</span><br><span class="line">&#123; <span class="string">"name"</span> : <span class="string">"c"</span>,  <span class="string">score:</span> <span class="number">53</span>, <span class="string">pass:</span> <span class="number">0</span> &#125;</span><br><span class="line">&#123; <span class="string">"name"</span> : <span class="string">"Unspecified"</span>,  <span class="string">score:</span> <span class="number">70</span>, <span class="string">pass:</span> <span class="number">1</span> &#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>本文介绍表达式操作符的分类和常用的表达式操作符的用法，表达式操作符主要作用于$project下，通过使用这些操作符可以对文档中的字面量进行处理并返回，进而返回更多有用的数据。</p>
+<blockquote>
+<p>感谢阅读~</p>
+</blockquote>
+<p>如果想了解更多技术圈内容和技术分享，可以搜索【今天不想写代码】或者扫描以下二维码关注公众号：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/529477-b33776d86c54adc5?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+</div></div></main><div id="pagination-wrapper"><a id="page-next" href="/2017/08/11/mongoDB_Aggregation2/">mongoDB查询进阶--聚合管道(二) <i class="fa fa-chevron-right"></i></a></div><footer id="page-footer"><div id="footer-wrapper"><div id="blog-meta">&copy;2017-2020 By Jacee Chan | Theme - <a id="theme-name" href="https://github.com/huan555/lemon-lime"> Lemon-Lime</a> | Power By <a id="theme-powered-by" href="http://hexo.io"> Hexo</a></div><div id="viewed-record"><script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-eye" aria-hidden="true"></i> <span id="busuanzi_value_page_pv"></span></span></div><div id="copyright-wrapper"><i class="fa fa-cc" aria-hidden="true"></i><div id="copyright">Except where otherwise noted, content on this blog is licensed under <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>.</div></div><div id="contact-me"><div id="rss"><a href="/atom.xml" type="application/atom+xml" rel="alternate" target="_blank"><i class="fa fa-rss" aria-hidden="true"></i></a></div><span id="github"><a href="https://github.com/yourUserName"><i class="fa fa-github" aria-hidden="true"></i></a></span></div></div></footer><script src="/compass/js/blog.js"></script></div></body>
