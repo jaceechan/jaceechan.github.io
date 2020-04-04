@@ -1,2 +1,64 @@
 <!DOCTYPE html><head><meta name="generator" content="Hexo 3.9.0"><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content><meta name="author" content="Jacee Chan"><meta name="keywords" content><meta name="copyright" content="copyright.liscense_type"><title>JCBlog</title><!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-<!--[if lt IE 9]><script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script><script src="https://cdn.bootcss.com/respond/1.4.2/respond.min.js"></script><![endif]--><link rel="icon" href="/compass/imgs/favicon.ico"><link rel="stylesheet" href="/compass/stylesheets/font-awesome.min.css"><script>var algoliaConfig = {"on":false}</script><link rel="stylesheet" href="/compass/stylesheets/screen.css"></head><body><div id="body-inner-wrapper"><header id="page-header"><nav id="nav"><div id="site-name">JCBlog</div><i class="fa fa-bars fa-2x" id="nav-icon" aria-hidden="true"></i><div id="nav-expanded"><a class="nav-word-item" href="/">主页</a><a class="nav-word-item" href="/archives">归档</a><a class="nav-word-item" href="/tags">标签</a><a class="nav-word-item" href="/categories">分类</a></div><div id="nav-list"><ul><li><a class="nav-list-item" href="/">主页</a></li><li><a class="nav-list-item" href="/archives">归档</a></li><li><a class="nav-list-item" href="/tags">标签</a></li><li><a class="nav-list-item" href="/categories">分类</a></li></ul></div></nav><div id="banner-wrapper"><div id="banner-pagetype-dependent-info"><h1 id="post-title">JCBlog</h1><span id="post-description"></span></div></div><a title="回到顶部"><i class="fa fa-arrow-up" id="to-Top" aria-hidden="true"></i></a></header><article class="each-post"><div class="each-post-meta"><span class="each-post-title"><a href="/2017/08/11/mongoDB_Aggregation2/">mongoDB查询进阶--聚合管道(二)</a></span><span class="each-post-date"> <i class="fa fa-calendar" aria-hidden="true"></i> 2017-08-11</span></div><div class="each-post-excerpt">这篇博文没有摘要。</div><div><a class="read-more" href="/2017/08/11/mongoDB_Aggregation2/">阅读全文</a></div></article><article class="each-post"><div class="each-post-meta"><span class="each-post-title"><a href="/2017/08/11/mongoDB_Aggregation1/">mongoDB查询进阶--聚合管道(一)</a></span><span class="each-post-date"> <i class="fa fa-calendar" aria-hidden="true"></i> 2017-08-11</span></div><div class="each-post-excerpt">这篇博文没有摘要。</div><div><a class="read-more" href="/2017/08/11/mongoDB_Aggregation1/">阅读全文</a></div></article><article class="each-post"><div class="each-post-meta"><span class="each-post-title"><a href="/2017/04/28/ssh/">SSH免密码登陆远程服务器手记</a></span><span class="each-post-date"> <i class="fa fa-calendar" aria-hidden="true"></i> 2017-04-28</span></div><div class="each-post-excerpt">这篇博文没有摘要。</div><div><a class="read-more" href="/2017/04/28/ssh/">阅读全文</a></div></article><article class="each-post"><div class="each-post-meta"><span class="each-post-title"><a href="/2016/12/21/createProject/">捣弄从0开始构建项目</a></span><span class="each-post-date"> <i class="fa fa-calendar" aria-hidden="true"></i> 2016-12-21</span></div><div class="each-post-excerpt">这篇博文没有摘要。</div><div><a class="read-more" href="/2016/12/21/createProject/">阅读全文</a></div></article><article class="each-post"><div class="each-post-meta"><span class="each-post-title"><a href="/2015/12/30/wechat-develope/">微信开发入门</a></span><span class="each-post-date"> <i class="fa fa-calendar" aria-hidden="true"></i> 2015-12-30</span></div><div class="each-post-excerpt">这篇博文没有摘要。</div><div><a class="read-more" href="/2015/12/30/wechat-develope/">阅读全文</a></div></article><div id="pagination-wrapper"><div id="pagination"><span class="page-number current">1</span></div></div><footer id="page-footer"><div id="footer-wrapper"><div id="blog-meta">&copy;2017-2020 By Jacee Chan | 主题 - <a id="theme-name" href="https://github.com/huan555/lemon-lime"> Lemon-Lime</a> | 驱动 - <a id="theme-powered-by" href="http://hexo.io"> Hexo</a></div><div id="viewed-record"><script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_site_uv"><i class="fa fa-user" aria-hidden="true"></i> <span id="busuanzi_value_site_uv"></span></span><span id="busuanzi_container_site_pv">Total <i class="fa fa-eye" aria-hidden="true"></i> <span id="busuanzi_value_site_pv"></span></span></div><div id="copyright-wrapper"><i class="fa fa-cc" aria-hidden="true"></i><div id="copyright">除非有特别声明，本博客所有文章均采用 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0 协议</a>.</div></div><div id="contact-me"><div id="rss"><a href="/atom.xml" type="application/atom+xml" rel="alternate" target="_blank"><i class="fa fa-rss" aria-hidden="true"></i></a></div><span id="github"><a href="https://github.com/yourUserName"><i class="fa fa-github" aria-hidden="true"></i></a></span></div></div></footer><script src="/compass/js/blog.js"></script></div></body>
+<!--[if lt IE 9]><script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script><script src="https://cdn.bootcss.com/respond/1.4.2/respond.min.js"></script><![endif]--><link rel="icon" href="/compass/imgs/favicon.ico"><link rel="stylesheet" href="/compass/stylesheets/font-awesome.min.css"><script>var algoliaConfig = {"on":false}</script><link rel="stylesheet" href="/compass/stylesheets/screen.css"></head><body><div id="body-inner-wrapper"><header id="page-header"><nav id="nav"><div id="site-name">JCBlog</div><i class="fa fa-bars fa-2x" id="nav-icon" aria-hidden="true"></i><div id="nav-expanded"><a class="nav-word-item" href="/">Home</a><a class="nav-word-item" href="/archives">Archives</a><a class="nav-word-item" href="/tags">Tags</a><a class="nav-word-item" href="/categories">Catogories</a></div><div id="nav-list"><ul><li><a class="nav-list-item" href="/">Home</a></li><li><a class="nav-list-item" href="/archives">Archives</a></li><li><a class="nav-list-item" href="/tags">Tags</a></li><li><a class="nav-list-item" href="/categories">Catogories</a></li></ul></div></nav><div id="banner-wrapper"><div id="banner-pagetype-dependent-info"><h1 id="post-title">JCBlog</h1><span id="post-description"></span></div></div><a title="Back to Top"><i class="fa fa-arrow-up" id="to-Top" aria-hidden="true"></i></a></header><article class="each-post"><div class="each-post-meta"><span class="each-post-title"><a href="/2017/08/11/mongoDB_Aggregation2/">mongoDB查询进阶--聚合管道(二)</a></span><span class="each-post-date"> <i class="fa fa-calendar" aria-hidden="true"></i> 2017-08-11</span></div><div class="each-post-excerpt">mongoDB查询进阶–聚合管道(二)
+
+上篇最后说到管道操作符，本篇文章将详细说一下管道操作符。
+
+mongoDB查询进阶–聚合管道(一)回顾
+
+什么是管道操作符(Aggregation Pipeline Operators)
+mongoDB有4类操作符用于文档的操作，例如find查询里面会用到的\$gte，\$in等。操作符以$开头，分为查询操作符，更新操作符，管道操作符，查询修饰符4大类。其中管道操作符是用于聚合管道中的操作符。
+
+常用管道操作符
+操作符简述$match匹配操作符，用于对文档集合进行筛选$project投射操作符，用于重构每一个文档的字段，可以提取字段，重命名字段，甚至可</div><div><a class="read-more" href="/2017/08/11/mongoDB_Aggregation2/">Read More</a></div></article><article class="each-post"><div class="each-post-meta"><span class="each-post-title"><a href="/2017/08/11/mongoDB_Aggregation1/">mongoDB查询进阶--聚合管道(一)</a></span><span class="each-post-date"> <i class="fa fa-calendar" aria-hidden="true"></i> 2017-08-11</span></div><div class="each-post-excerpt">前言：一般查询可以通过find方法，但如果是比较复杂的查询或者数据统计的话，find可能就无能为力了，这时也许你需要的是aggregate.
+
+什么是聚合管道(aggregation pipeline)
+英文文档中是aggregation pipeline，直译为聚合管道，它可以对数据文档进行变换和组合。聚合管道是基于数据流概念，数据进入管道经过一个或多个stage，每个stage对数据进行操作（筛选，投射，分组，排序，限制或跳过）后输出最终结果。
+
+官方示例
+ 示例来源：https://docs.mongodb.com/manual/core/aggregation-pipeline/
+
+解</div><div><a class="read-more" href="/2017/08/11/mongoDB_Aggregation1/">Read More</a></div></article><article class="each-post"><div class="each-post-meta"><span class="each-post-title"><a href="/2017/04/28/ssh/">SSH免密码登陆远程服务器手记</a></span><span class="each-post-date"> <i class="fa fa-calendar" aria-hidden="true"></i> 2017-04-28</span></div><div class="each-post-excerpt">SSH 为 Secure Shell 的缩写，由 IETF 的网络小组（Network Working Group）所制定；SSH 为建立在应用层基础上的安全协议。SSH 是目前较可靠，专为远程登录会话和其他网络服务提供安全性的协议
+
+获取/生成公钥和私钥
+ 1. 检查本地是否已有公钥和私钥,打开终端并输入
+
+1
+
+
+cd ~/.ssh
+
+
+本地公钥一般在用户根目录下的.ssh文件夹下面, ~/代表用户根目录
+
+若存在则能成功进入./ssh文件夹，输入ls查看当前文件夹下的内容
+
+ * config – ssh配置文件
+ * id_rsa – 私钥
+ * id_rsa.pub – 公钥
+ * </div><div><a class="read-more" href="/2017/04/28/ssh/">Read More</a></div></article><article class="each-post"><div class="each-post-meta"><span class="each-post-title"><a href="/2016/12/21/createProject/">捣弄从0开始构建项目</a></span><span class="each-post-date"> <i class="fa fa-calendar" aria-hidden="true"></i> 2016-12-21</span></div><div class="each-post-excerpt">写在前面的话
+进入前端开发2年，一直不知道怎么搭建前端项目，一直都是公司前端负责人开好项目，然后往里面填东西，想着自己捣弄点东西，却无从下手，所以奋发图强一下，下定决心要自己构建一个项目。
+
+从目录开始搞清楚
+
+对于这个目录，基本处于懵逼状态，只知道其中几个目录和文件的作用，其他都不是清楚，唯有一个个地进击
+
+-build // …
+-config // src, server 共同使用的config
+-dist // 项目打包后存放的目录
+-node_modules //第三方模块安装后存放的目录
+-scripts // …
+-server //服务器端代码
+-src //前端代码
+-.ba</div><div><a class="read-more" href="/2016/12/21/createProject/">Read More</a></div></article><article class="each-post"><div class="each-post-meta"><span class="each-post-title"><a href="/2015/12/30/wechat-develope/">微信开发入门</a></span><span class="each-post-date"> <i class="fa fa-calendar" aria-hidden="true"></i> 2015-12-30</span></div><div class="each-post-excerpt">关键名词解释
+ * 微信公众号开发：
+   微信公众号开发分为以下三类：
+   
+    * 网页授权获取用户信息（一般用于微信活动页面）
+    * JSSDK（一般用于微信活动页面）
+    * 微信后台开发
+   
+   
+ * 回调页面域名：
+   用于网页授权获取用户基本信息，打开授权页后的转跳需在此域名下，需注意以下事项： Markdown Preview
+   1、在微信公众号请求用户网页授权之前，开发者需要先到公众平台官网中的开发者中心页配置授权回调域名请注意，这里填写的是域名（是一个字符串），而不是URL，因此请勿加http://等协议头；
+   2、授权回调域名配置规范为全</div><div><a class="read-more" href="/2015/12/30/wechat-develope/">Read More</a></div></article><div id="pagination-wrapper"><div id="pagination"><span class="page-number current">1</span></div></div><footer id="page-footer"><div id="footer-wrapper"><div id="blog-meta">&copy;2017-2020 By Jacee Chan | Theme - <a id="theme-name" href="https://github.com/huan555/lemon-lime"> Lemon-Lime</a> | Power By <a id="theme-powered-by" href="http://hexo.io"> Hexo</a></div><div id="viewed-record"><script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_site_uv"><i class="fa fa-user" aria-hidden="true"></i> <span id="busuanzi_value_site_uv"></span></span><span id="busuanzi_container_site_pv">Total <i class="fa fa-eye" aria-hidden="true"></i> <span id="busuanzi_value_site_pv"></span></span></div><div id="copyright-wrapper"><i class="fa fa-cc" aria-hidden="true"></i><div id="copyright">Except where otherwise noted, content on this blog is licensed under <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>.</div></div><div id="contact-me"><div id="rss"><a href="/atom.xml" type="application/atom+xml" rel="alternate" target="_blank"><i class="fa fa-rss" aria-hidden="true"></i></a></div><span id="github"><a href="https://github.com/yourUserName"><i class="fa fa-github" aria-hidden="true"></i></a></span></div></div></footer><script src="/compass/js/blog.js"></script></div></body>
